@@ -3,6 +3,9 @@ const form = document.getElementById("monitorForm");
 const input = document.getElementById("websiteUrl");
 const list = document.getElementById("monitoredList");
 const intervalSelect = document.getElementById("pingInterval");
+const createBtn = document.getElementById("createAccountBtn");
+const signInNowBtn = document.getElementById("signInNowBtn");
+
 
 // LOGIN POPUP LOGIC
 const loginBtn = document.getElementById("loginBtn");
@@ -101,4 +104,24 @@ signInNowBtn.addEventListener("click", async () => {
 
   const data = await res.json();
   alert(data.message || "Logged in");
+});
+//toggle logic
+const formTitle = document.getElementById("formTitle");
+const toggleToSignIn = document.getElementById("toggleToSignIn");
+const toggleToCreate = document.getElementById("toggleToCreate");
+
+toggleToSignIn.addEventListener("click", () => {
+  formTitle.textContent = "Sign In";
+  createBtn.classList.add("hidden");
+  signInNowBtn.classList.remove("hidden");
+  toggleToSignIn.classList.add("hidden");
+  toggleToCreate.classList.remove("hidden");
+});
+
+toggleToCreate.addEventListener("click", () => {
+  formTitle.textContent = "Create Account";
+  createBtn.classList.remove("hidden");
+  signInNowBtn.classList.add("hidden");
+  toggleToSignIn.classList.remove("hidden");
+  toggleToCreate.classList.add("hidden");
 });

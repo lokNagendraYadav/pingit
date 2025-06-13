@@ -72,3 +72,33 @@ form.addEventListener("submit", function (e) {
 
   input.value = "";
 });
+//login
+const backendURL = "https://pingit-backend.vercel.app";
+
+createBtn.addEventListener("click", async () => {
+  const email = document.getElementById("emailInput").value;
+  const password = document.getElementById("passwordInput").value;
+
+  const res = await fetch(`${backendURL}/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+
+  const data = await res.json();
+  alert(data.message || "Account created");
+});
+
+signInNowBtn.addEventListener("click", async () => {
+  const email = document.getElementById("emailInput").value;
+  const password = document.getElementById("passwordInput").value;
+
+  const res = await fetch(`${backendURL}/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+
+  const data = await res.json();
+  alert(data.message || "Logged in");
+});

@@ -26,13 +26,27 @@
     <!-- Form Popup + Monitor Section -->
     <div id="overlay" class="overlay hidden"></div>
 
-    <div id="loginForm" class="login-form hidden">
-      <h2>Create Account</h2>
-      <input type="email" placeholder="Email" />
-      <input type="password" placeholder="Password" />
-      <button id="createAccountBtn">Create Account</button>
-      <button id="closeBtn" class="close-btn">&times;</button>
-    </div>
+    <!-- ...existing code before stays same... -->
+
+<div id="loginForm" class="login-form hidden">
+  <h2 id="formTitle">Create Account</h2>
+  <input type="email" id="emailInput" placeholder="Email" />
+  <input type="password" id="passwordInput" placeholder="Password" />
+
+  <!-- Action buttons -->
+  <button id="createAccountBtn">Create Account</button>
+  <button id="signInNowBtn" class="hidden">Sign In Now</button>
+
+  <!-- Toggle buttons -->
+  <button id="toggleToSignIn">Sign In</button>
+  <button id="toggleToCreate" class="hidden">Back to Create</button>
+
+  <button id="closeBtn" class="close-btn">&times;</button>
+</div>
+
+
+<!-- ...rest of code stays same... -->
+
 
     <!-- MONITOR SECTION -->
     <section class="monitor-section">

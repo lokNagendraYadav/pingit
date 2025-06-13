@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Animated Login Create Account</title>
+  <link rel="stylesheet" href="style.css" />
+  <script async type="text/javascript" src = Script.js></script>
+</head>
+<body>
+
+  <!-- FIXED NAVBAR + MBOX OUTSIDE MAIN -->
+  <nav class="navbar">
+    <button id="loginBtn" class="login-btn">Login</button>
+  </nav>
+  
+  <nav class="mbox">
+    <div class="mbox-text">
+      <h1>PingIt..</h1>
+      <p>Your personal web monitoring service</p>
+    </div>
+  </nav>
+
+  <main id="mainContent">
+    <!-- Form Popup + Monitor Section -->
+    <div id="overlay" class="overlay hidden"></div>
+
+    <div id="loginForm" class="login-form hidden">
+      <h2>Create Account</h2>
+      <input type="email" placeholder="Email" />
+      <input type="password" placeholder="Password" />
+      <button id="createAccountBtn">Create Account</button>
+      <button id="closeBtn" class="close-btn">&times;</button>
+    </div>
+
+    <!-- MONITOR SECTION -->
+    <section class="monitor-section">
+      <h2>Add Website to Monitor</h2>
+      <form id="monitorForm">
+        <input type="url" id="websiteUrl" placeholder="Enter website URL" required />
+        <select id="pingInterval" required>
+        <option value="300000">Every 5 minutes</option>
+        <option value="600000">Every 10 minutes</option>
+        <option value="900000">Every 15 minutes</option>
+         <option value="1800000">Every 30 minutes</option>
+         </select>
+
+        <button type="submit">Start Monitoring</button>
+
+        
+      </form>
+
+      <div id="monitoredList" class="monitor-list"></div>
+    </section>
+  </main>
+
+</body>
+
+</html>

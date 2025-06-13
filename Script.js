@@ -51,7 +51,8 @@ form.addEventListener("submit", function (e) {
     statusElem.className = "status checking";
 
     try {
-      const res = await fetch(`https://your-backend.vercel.app/ping?url=${encodeURIComponent(url)}`);
+      const res = await fetch(`https://pingit-backend.vercel.app/ping?url=${encodeURIComponent(url)}`);
+
       const json = await res.json();
       if (json.success) {
         statusElem.textContent = "Online";

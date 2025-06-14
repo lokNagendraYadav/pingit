@@ -6,7 +6,6 @@ const intervalSelect = document.getElementById("pingInterval");
 const createBtn = document.getElementById("createAccountBtn");
 const signInNowBtn = document.getElementById("signInNowBtn");
 
-
 // LOGIN POPUP LOGIC
 const loginBtn = document.getElementById("loginBtn");
 const loginForm = document.getElementById("loginForm");
@@ -55,9 +54,6 @@ form.addEventListener("submit", function (e) {
 
     try {
       const res = await fetch(`${backendURL}/ping?url=${encodeURIComponent(url)}`);
-
-
-
       const json = await res.json();
       if (json.success) {
         statusElem.textContent = "Online";
@@ -77,10 +73,9 @@ form.addEventListener("submit", function (e) {
 
   input.value = "";
 });
-//login
+
+// login
 const backendURL = "https://pingit-backend.onrender.com";
-
-
 
 createBtn.addEventListener("click", async () => {
   const email = document.getElementById("emailInput").value;
@@ -93,7 +88,7 @@ createBtn.addEventListener("click", async () => {
   });
 
   const data = await res.json();
-  alert(data.message || "Account created");
+  showToast(data.message || "Account created", res.ok ? "success" : "error");
 });
 
 signInNowBtn.addEventListener("click", async () => {
@@ -107,9 +102,28 @@ signInNowBtn.addEventListener("click", async () => {
   });
 
   const data = await res.json();
-  alert(data.message || "Logged in");
+  showToast(data.message || "Logged in", res.ok ? "success" : "error");
 });
-//toggle logic
+
+// TOAST MESSAGE FUNCTION
+function showToast(message, type = "success") {
+  let toast = document.getElementById("toast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "toast";
+    toast.className = "toast hidden";
+    document.body.appendChild(toast);
+  }
+
+  toast.textContent = message;
+  toast.className = `toast show ${type}`;
+
+  setTimeout(() => {
+    toast.className = "toast hidden";
+  }, 3000);
+}
+
+// toggle logic
 const formTitle = document.getElementById("formTitle");
 const toggleToSignIn = document.getElementById("toggleToSignIn");
 const toggleToCreate = document.getElementById("toggleToCreate");

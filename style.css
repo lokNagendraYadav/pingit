@@ -270,3 +270,31 @@ body {
 .status.offline {
   color: red;
 }
+/* Common button style for Sign In Now & Toggle buttons */
+.login-form button#signInNowBtn,
+.login-form button#toggleToSignIn,
+.login-form button#toggleToCreate {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 0.5rem;
+  background-color: #6a11cb;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  font-size: 1rem;
+}
+
+/* Hover Effects */
+.login-form button#signInNowBtn:hover,
+.login-form button#toggleToSignIn:hover,
+.login-form button#toggleToCreate:hover {
+  background-color: #3f0d7a;
+  box-shadow: 0 4px 12px rgba(63, 13, 122, 0.4);
+}
+
+.login-form button {
+  margin-bottom: 0.5rem;
+}

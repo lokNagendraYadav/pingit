@@ -57,6 +57,7 @@ form.addEventListener("submit", function (e) {
       const res = await fetch(`${backendURL}/ping?url=${encodeURIComponent(url)}`);
 
 
+
       const json = await res.json();
       if (json.success) {
         statusElem.textContent = "Online";
@@ -77,7 +78,8 @@ form.addEventListener("submit", function (e) {
   input.value = "";
 });
 //login
-const backendURL = "https://pingit-backend.onrender.com/";
+const backendURL = "https://pingit-backend.onrender.com";
+
 
 
 createBtn.addEventListener("click", async () => {

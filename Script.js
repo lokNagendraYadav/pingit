@@ -76,7 +76,7 @@ form.addEventListener("submit", function (e) {
   input.value = "";
 });
 //login
-const backendURL = "https://pingit-backend.vercel.app";
+const backendURL = "https://pingit-backend.onrender.com";
 
 createBtn.addEventListener("click", async () => {
   const email = document.getElementById("emailInput").value;

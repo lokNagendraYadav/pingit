@@ -54,7 +54,8 @@ form.addEventListener("submit", function (e) {
     statusElem.className = "status checking";
 
     try {
-      const res = await fetch(`https://pingit-backend.vercel.app/ping?url=${encodeURIComponent(url)}`);
+      const res = await fetch(`${backendURL}/ping?url=${encodeURIComponent(url)}`);
+
 
       const json = await res.json();
       if (json.success) {
@@ -76,7 +77,8 @@ form.addEventListener("submit", function (e) {
   input.value = "";
 });
 //login
-const backendURL = "https://pingit-backend.onrender.com";
+const backendURL = "https://pingit-backend.onrender.com/";
+
 
 createBtn.addEventListener("click", async () => {
   const email = document.getElementById("emailInput").value;

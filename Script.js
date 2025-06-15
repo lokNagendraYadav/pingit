@@ -136,7 +136,7 @@ function startMonitoring(name, url, interval) {
     }
   }
 
-  document.getElementById("monitoredList").appendChild(card);
+  list.appendChild(card);
   checkStatus();
   setInterval(checkStatus, interval);
 }
@@ -157,18 +157,23 @@ form.addEventListener("submit", async function (e) {
 
   if (!name || !url || isNaN(interval)) return;
 
-  const res = await fetch(`${backendURL}/add-url`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, name, url, interval })
-  });
+  try {
+    const res = await fetch(`${backendURL}/add-url`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, name, url, interval })
+    });
 
-  const data = await res.json();
-  if (res.ok) {
-    startMonitoring(name, url, interval);
-    form.reset();
-  } else {
-    alert(data.message || "Failed to save URL.");
+    const data = await res.json();
+    if (res.ok) {
+      startMonitoring(name, url, interval);
+      form.reset();
+    } else {
+      alert(data.message || "Failed to save URL.");
+    }
+  } catch (error) {
+    alert("Server error");
+    console.error(error);
   }
 });
 
@@ -178,10 +183,15 @@ async function loadMonitoredSites() {
   const email = localStorage.getItem("userEmail");
   if (!email) return;
 
-  const res = await fetch(`${backendURL}/get-urls?email=${encodeURIComponent(email)}`);
-  const data = await res.json();
-  if (res.ok && Array.isArray(data.urls)) {
-    data.urls.forEach(({ name, url, interval }) => startMonitoring(name, url, interval));
+  try {
+    const res = await fetch(`${backendURL}/get-urls?email=${encodeURIComponent(email)}`);
+    const data = await res.json();
+    if (res.ok && Array.isArray(data.urls)) {
+      data.urls.forEach(({ name, url, interval }) => startMonitoring(name, url, interval));
+    }
+  } catch (error) {
+    alert("Failed to load monitored sites.");
+    console.error(error);
   }
 }
 

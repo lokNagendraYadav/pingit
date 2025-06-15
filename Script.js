@@ -1,8 +1,8 @@
-// DOM references
 const form = document.getElementById("monitorForm");
 const input = document.getElementById("websiteUrl");
 const list = document.getElementById("monitoredList");
 const intervalSelect = document.getElementById("pingInterval");
+
 const createBtn = document.getElementById("createAccountBtn");
 const signInNowBtn = document.getElementById("signInNowBtn");
 const loginBtn = document.getElementById("loginBtn");
@@ -13,9 +13,9 @@ const formTitle = document.getElementById("formTitle");
 const toggleToSignIn = document.getElementById("toggleToSignIn");
 const toggleToCreate = document.getElementById("toggleToCreate");
 
-const backendURL = "https://pingit-backend.onrender.com"; // Moved to top
+const backendURL = "https://pingit-backend.onrender.com";
 
-// LOGIN POPUP LOGIC
+// OPEN/CLOSE LOGIN FORM
 function openForm() {
   overlay.classList.remove("hidden");
   loginForm.classList.remove("hidden");
@@ -37,7 +37,7 @@ loginBtn.addEventListener("click", openForm);
 overlay.addEventListener("click", closeForm);
 closeBtn.addEventListener("click", closeForm);
 
-// LOGIN / REGISTER
+// REGISTER ACCOUNT
 createBtn.addEventListener("click", async () => {
   const email = document.getElementById("emailInput").value;
   const password = document.getElementById("passwordInput").value;
@@ -58,6 +58,7 @@ createBtn.addEventListener("click", async () => {
   }
 });
 
+// LOGIN
 signInNowBtn.addEventListener("click", async () => {
   const email = document.getElementById("emailInput").value;
   const password = document.getElementById("passwordInput").value;
@@ -78,7 +79,7 @@ signInNowBtn.addEventListener("click", async () => {
   }
 });
 
-// TOGGLE CREATE/SIGN-IN
+// TOGGLE MODE
 toggleToSignIn.addEventListener("click", () => {
   formTitle.textContent = "Sign In";
   createBtn.classList.add("hidden");
@@ -95,7 +96,7 @@ toggleToCreate.addEventListener("click", () => {
   toggleToCreate.classList.add("hidden");
 });
 
-// MAIN MONITOR LOGIC
+// MONITORING LOGIC
 function startMonitoring(url, interval) {
   const item = document.createElement("div");
   item.className = "monitor-item";
@@ -148,7 +149,7 @@ form.addEventListener("submit", function (e) {
 });
 
 function loadMonitoredSites() {
-  list.innerHTML = ""; // clear duplicates on reload
+  list.innerHTML = "";
   const saved = JSON.parse(localStorage.getItem("monitoredSites") || "[]");
   saved.forEach(({ url, interval }) => startMonitoring(url, interval));
 }

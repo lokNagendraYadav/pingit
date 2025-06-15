@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" />
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Animated Login Create Account</title>
+  <title>PingIt - Web Monitor</title>
   <link rel="stylesheet" href="style.css" />
-  <script defer src="Script.js"></script>
-
+  <script defer src="script.js"></script>
 </head>
 <body>
 
-  <!-- FIXED NAVBAR + MBOX OUTSIDE MAIN -->
+  <!-- Navbar -->
   <nav class="navbar">
     <button id="loginBtn" class="login-btn">Login</button>
   </nav>
-  
+
+  <!-- Main Banner Box -->
   <nav class="mbox">
     <div class="mbox-text">
       <h1>PingIt..</h1>
@@ -23,47 +23,39 @@
   </nav>
 
   <main id="mainContent">
-    <!-- Form Popup + Monitor Section -->
+    <!-- Overlay for login form -->
     <div id="overlay" class="overlay hidden"></div>
 
-    <!-- ...existing code before stays same... -->
+    <!-- Login/Create Form -->
+    <div id="loginForm" class="login-form hidden">
+      <h2 id="formTitle">Create Account</h2>
+      <input type="email" id="emailInput" placeholder="Email" />
+      <input type="password" id="passwordInput" placeholder="Password" />
 
-<div id="loginForm" class="login-form hidden">
-  <h2 id="formTitle">Create Account</h2>
-  <input type="email" id="emailInput" placeholder="Email" />
-  <input type="password" id="passwordInput" placeholder="Password" />
+      <button id="createAccountBtn">Create Account</button>
+      <button id="signInNowBtn" class="hidden">Sign In Now</button>
 
-  <!-- Action buttons -->
-  <button id="createAccountBtn">Create Account</button>
-  <button id="signInNowBtn" class="hidden">Sign In Now</button>
+      <button id="toggleToSignIn">Sign In</button>
+      <button id="toggleToCreate" class="hidden">Back to Create</button>
 
-  <!-- Toggle buttons -->
-  <button id="toggleToSignIn">Sign In</button>
-  <button id="toggleToCreate" class="hidden">Back to Create</button>
+      <button id="closeBtn" class="close-btn">&times;</button>
+    </div>
 
-  <button id="closeBtn" class="close-btn">&times;</button>
-</div>
+    <!-- Toast notification -->
+    <div id="toast" class="toast hidden"></div>
 
-
-<!-- ...rest of code stays same... -->
-<div id="toast" class="toast hidden"></div>
-
-
-    <!-- MONITOR SECTION -->
+    <!-- Website Monitor Section -->
     <section class="monitor-section">
       <h2>Add Website to Monitor</h2>
       <form id="monitorForm">
         <input type="url" id="websiteUrl" placeholder="Enter website URL" required />
         <select id="pingInterval" required>
-        <option value="300000">Every 5 minutes</option>
-        <option value="600000">Every 10 minutes</option>
-        <option value="900000">Every 15 minutes</option>
-         <option value="1800000">Every 30 minutes</option>
-         </select>
-
+          <option value="300000">Every 5 minutes</option>
+          <option value="600000">Every 10 minutes</option>
+          <option value="900000">Every 15 minutes</option>
+          <option value="1800000">Every 30 minutes</option>
+        </select>
         <button type="submit">Start Monitoring</button>
-
-        
       </form>
 
       <div id="monitoredList" class="monitor-list"></div>
@@ -71,5 +63,4 @@
   </main>
 
 </body>
-
 </html>

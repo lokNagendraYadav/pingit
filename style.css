@@ -1,3 +1,4 @@
+/* RESET & GLOBAL */
 *,
 *::before,
 *::after {
@@ -5,13 +6,14 @@
   margin: 0;
   padding: 0;
 }
-
 body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  background: #ecdaf3;
+  font-family: Arial, sans-serif;
 }
 
+/* NAVBAR */
 .navbar {
   position: fixed;
   width: 100%;
@@ -24,8 +26,8 @@ body {
   z-index: 2;
   border-radius: 20px 20px 0 0;
 }
-
-.login-btn {
+.login-btn,
+.logout-btn {
   background-color: white;
   color: #6a11cb;
   padding: 0.6rem 1rem;
@@ -33,135 +35,18 @@ body {
   border-radius: 5px;
   font-weight: bold;
   cursor: pointer;
+  margin-left: 1rem;
   transition: background-color 0.3s ease;
 }
-
-.login-btn:hover {
+.login-btn:hover,
+.logout-btn:hover {
   background-color: #ddd;
 }
-
-#mainContent {
-  background: #ecdaf3;
-  padding-top: 35vh;
-  padding-bottom: 3rem;
-  min-height: 100vh;
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(5px);
-  z-index: 10;
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-
-.overlay.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.login-form {
-  position: fixed;
-  top: 20%;
-  left: 50%;
-  transform: translate(-50%, -20%) scale(0.5);
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  width: 320px;
-  opacity: 0;
-  z-index: 20;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  box-sizing: border-box;
-}
-
-.login-form.active {
-  transform: translate(-50%, -50%) scale(1);
-  top: 50%;
-  opacity: 1;
-}
-
-.login-form h2 {
-  margin-bottom: 1rem;
-  color: #333;
-  text-align: center;
-}
-
-.login-form input {
-  width: 100%;
-  padding: 0.8rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-}
-
-.login-form input:hover {
-  border-color: #6a11cb;
-  box-shadow: 0 0 8px #6a11cbaa;
-}
-
-.login-form input:focus {
-  outline: none;
-  border-color: #5011a1;
-  box-shadow: 0 0 10px #5011a1cc;
-}
-
-.login-form button {
-  margin-bottom: 0.5rem;
-}
-
-.login-form button#createAccountBtn,
-.login-form button#signInNowBtn,
-.login-form button#toggleToSignIn,
-.login-form button#toggleToCreate {
-  width: 100%;
-  padding: 0.8rem;
-  background-color: #6a11cb;
-  border: none;
-  color: white;
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  font-size: 1rem;
-}
-
-.login-form button:hover {
-  background-color: #3f0d7a;
-  box-shadow: 0 4px 12px rgba(63, 13, 122, 0.4);
-}
-
-.login-form:hover {
-  box-shadow: 0 0 20px rgba(106, 17, 203, 0.4);
-  transform: translate(-50%, -50%) scale(1.02);
-}
-
-.close-btn {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.7rem;
-  background: none;
-  border: none;
-  font-size: 1.8rem;
-  cursor: pointer;
-  color: #999;
-}
-
-.close-btn:hover {
-  color: #6a11cb;
-}
-
 .hidden {
   display: none;
 }
 
+/* MBOX */
 .mbox {
   position: fixed;
   width: 100%;
@@ -177,49 +62,148 @@ body {
   text-align: center;
   color: white;
 }
-
 .mbox-text h1 {
   font-size: 2.5rem;
 }
-
 .mbox-text p {
   font-size: 1.2rem;
   margin-top: 0.5rem;
 }
 
+/* MAIN SECTION */
+#mainContent {
+  padding-top: 35vh;
+  padding-bottom: 3rem;
+  min-height: 100vh;
+}
+
+/* OVERLAY */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  z-index: 10;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+.overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* LOGIN FORM */
+.login-form {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -20%) scale(0.5);
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  width: 320px;
+  opacity: 0;
+  z-index: 20;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.login-form.active {
+  transform: translate(-50%, -50%) scale(1);
+  top: 50%;
+  opacity: 1;
+}
+.login-form h2 {
+  margin-bottom: 1rem;
+  color: #333;
+  text-align: center;
+}
+.login-form input {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+.login-form input:hover {
+  border-color: #6a11cb;
+  box-shadow: 0 0 8px #6a11cbaa;
+}
+.login-form input:focus {
+  outline: none;
+  border-color: #5011a1;
+  box-shadow: 0 0 10px #5011a1cc;
+}
+.login-form button {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 0.5rem;
+  background-color: #6a11cb;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+.login-form button:hover {
+  background-color: #3f0d7a;
+  box-shadow: 0 4px 12px rgba(63, 13, 122, 0.4);
+}
+.login-form:hover {
+  box-shadow: 0 0 20px rgba(106, 17, 203, 0.4);
+  transform: translate(-50%, -50%) scale(1.02);
+}
+.close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.7rem;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #999;
+}
+.close-btn:hover {
+  color: #6a11cb;
+}
+
+/* MONITOR SECTION */
 .monitor-section {
-  max-width: 600px;
-  margin: 3rem auto;
+  max-width: 800px;
+  margin: 2rem auto;
   background: #fff;
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
   text-align: center;
 }
-
 .monitor-section h2 {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   color: #6a11cb;
 }
 
-#monitorForm {
+/* FORM BOX FIXED */
+.input-box form {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
-  margin-bottom: 2rem;
 }
-
-#monitorForm input,
-#monitorForm select {
-  flex: 1;
-  padding: 0.6rem;
+.input-box input,
+.input-box select {
+  padding: 0.6rem 1rem;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 1rem;
+  min-width: 220px;
 }
-
-#monitorForm button {
-  padding: 0.6rem 1rem;
+.input-box button {
+  padding: 0.6rem 1.2rem;
   background-color: #6a11cb;
   color: white;
   border: none;
@@ -228,94 +212,49 @@ body {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-
-#monitorForm button:hover {
+.input-box button:hover {
   background-color: #5011a1;
 }
+.input-box {
+  background: white;
+  padding: 20px;
+  margin: 0 auto;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+}
 
+/* MONITORED LIST */
+.monitored-section {
+  max-width: 800px;
+  margin: 2rem auto;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+.monitored-section h2 {
+  margin-bottom: 1rem;
+  color: #6a11cb;
+}
 .monitor-list {
   text-align: left;
 }
-
 .monitor-item {
   display: flex;
   justify-content: space-between;
   padding: 0.8rem 1rem;
   border-bottom: 1px solid #eee;
 }
-
 .status {
   font-weight: bold;
 }
-
 .status.checking {
   color: gray;
 }
-
 .status.online {
   color: green;
 }
-
 .status.offline {
   color: red;
-}
-/*logout*/
-.logout-btn {
-  background-color: white;
-  color: #6a11cb;
-  padding: 0.6rem 1rem;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-left: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-.logout-btn:hover {
-  background-color: #ddd;
-}
-/*ping box*/
-.monitor-card {
-  background: white;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.monitor-card h3 {
-  color: #6a11cb;
-  margin-bottom: 0.5rem;
-}
-
-.monitor-card p {
-  margin: 0.5rem 0;
-}
-
-.preview-box {
-  margin-top: 1rem;
-  width: 100%;
-  height: 200px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-}
-.input-box {
-  background: white;
-  padding: 20px;
-  margin: 20px auto;
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  max-width: 700px;
-}
-
-.monitored-box {
-  background: white;
-  padding: 20px;
-  margin: 20px auto;
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
 }

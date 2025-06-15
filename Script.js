@@ -6,6 +6,7 @@ const intervalSelect = document.getElementById("pingInterval");
 const createBtn = document.getElementById("createAccountBtn");
 const signInNowBtn = document.getElementById("signInNowBtn");
 const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
 const loginForm = document.getElementById("loginForm");
 const overlay = document.getElementById("overlay");
 const closeBtn = document.getElementById("closeBtn");
@@ -15,7 +16,7 @@ const toggleToCreate = document.getElementById("toggleToCreate");
 
 const backendURL = "https://pingit-backend.onrender.com";
 
-// Popup Logic
+// Toggle login form popup
 function openForm() {
   overlay.classList.remove("hidden");
   loginForm.classList.remove("hidden");
@@ -37,7 +38,24 @@ loginBtn.addEventListener("click", openForm);
 overlay.addEventListener("click", closeForm);
 closeBtn.addEventListener("click", closeForm);
 
-// Register
+// Toggle Form Mode
+toggleToSignIn.addEventListener("click", () => {
+  formTitle.textContent = "Sign In";
+  createBtn.classList.add("hidden");
+  signInNowBtn.classList.remove("hidden");
+  toggleToSignIn.classList.add("hidden");
+  toggleToCreate.classList.remove("hidden");
+});
+
+toggleToCreate.addEventListener("click", () => {
+  formTitle.textContent = "Create Account";
+  createBtn.classList.remove("hidden");
+  signInNowBtn.classList.add("hidden");
+  toggleToSignIn.classList.remove("hidden");
+  toggleToCreate.classList.add("hidden");
+});
+
+// Registration
 createBtn.addEventListener("click", async () => {
   const email = document.getElementById("emailInput").value;
   const password = document.getElementById("passwordInput").value;
@@ -55,6 +73,7 @@ createBtn.addEventListener("click", async () => {
     localStorage.setItem("loggedIn", "true");
     loadMonitoredSites();
     closeForm();
+    checkAuthStatus();
   }
 });
 
@@ -76,58 +95,51 @@ signInNowBtn.addEventListener("click", async () => {
     localStorage.setItem("loggedIn", "true");
     loadMonitoredSites();
     closeForm();
+    checkAuthStatus();
   }
 });
 
-// Toggle
-toggleToSignIn.addEventListener("click", () => {
-  formTitle.textContent = "Sign In";
-  createBtn.classList.add("hidden");
-  signInNowBtn.classList.remove("hidden");
-  toggleToSignIn.classList.add("hidden");
-  toggleToCreate.classList.remove("hidden");
-});
+// Monitor Logic
+function startMonitoring(name, url, interval) {
+  const card = document.createElement("div");
+  card.className = "monitor-card";
+  card.innerHTML = `
+    <h3>${name}</h3>
+    <p>${url}</p>
+    <p>Status: <span class="status checking">Checking...</span></p>
+    <div class="preview-box">
+      <iframe src="${url}" width="100%" height="100%" loading="lazy"></iframe>
+    </div>
+  `;
 
-toggleToCreate.addEventListener("click", () => {
-  formTitle.textContent = "Create Account";
-  createBtn.classList.remove("hidden");
-  signInNowBtn.classList.add("hidden");
-  toggleToSignIn.classList.remove("hidden");
-  toggleToCreate.classList.add("hidden");
-});
+  const statusSpan = card.querySelector(".status");
 
-// Monitoring Logic
-function startMonitoring(url, interval) {
-  const item = document.createElement("div");
-  item.className = "monitor-item";
-  item.innerHTML = `<span>${url}</span><span class="status checking">Checking...</span>`;
-  list.appendChild(item);
+  async function checkStatus() {
+    statusSpan.textContent = "Checking...";
+    statusSpan.className = "status checking";
 
-  const statusElem = item.querySelector(".status");
-
-  const checkStatus = async () => {
-    statusElem.textContent = "Checking...";
-    statusElem.className = "status checking";
     try {
-      const res = await fetch(`${backendURL}/ping?url=${encodeURIComponent(url)}`);
-      const json = await res.json();
-      if (json.success) {
-        statusElem.textContent = "Online";
-        statusElem.className = "status online";
+      const response = await fetch(`${backendURL}/ping?url=${encodeURIComponent(url)}`);
+      const data = await response.json();
+      if (data.success) {
+        statusSpan.textContent = "Online";
+        statusSpan.className = "status online";
       } else {
-        statusElem.textContent = "Offline";
-        statusElem.className = "status offline";
+        statusSpan.textContent = "Offline";
+        statusSpan.className = "status offline";
       }
     } catch {
-      statusElem.textContent = "Offline";
-      statusElem.className = "status offline";
+      statusSpan.textContent = "Offline";
+      statusSpan.className = "status offline";
     }
-  };
+  }
 
+  document.getElementById("monitoredList").appendChild(card);
   checkStatus();
   setInterval(checkStatus, interval);
 }
 
+// Submit handler
 form.addEventListener("submit", function (e) {
   e.preventDefault();
 
@@ -136,118 +148,46 @@ form.addEventListener("submit", function (e) {
     return;
   }
 
+  const name = document.getElementById("websiteName").value.trim();
   const url = input.value.trim();
   const interval = parseInt(intervalSelect.value);
-  if (!url || isNaN(interval)) return;
+  if (!name || !url || isNaN(interval)) return;
 
   const saved = JSON.parse(localStorage.getItem("monitoredSites") || "[]");
-  saved.push({ url, interval });
+  saved.push({ name, url, interval });
   localStorage.setItem("monitoredSites", JSON.stringify(saved));
 
-  startMonitoring(url, interval);
-  input.value = "";
+  startMonitoring(name, url, interval);
+  form.reset();
 });
 
+// Load stored monitors
 function loadMonitoredSites() {
   list.innerHTML = "";
   const saved = JSON.parse(localStorage.getItem("monitoredSites") || "[]");
-  saved.forEach(({ url, interval }) => startMonitoring(url, interval));
+  saved.forEach(({ name, url, interval }) => startMonitoring(name, url, interval));
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  if (localStorage.getItem("loggedIn") === "true") {
-    loadMonitoredSites();
-  }
-});
-//free toggle login
-document.addEventListener("DOMContentLoaded", function () {
-  const loginBtn = document.getElementById("loginBtn");
-  const overlay = document.getElementById("overlay");
-  const loginForm = document.getElementById("loginForm");
-  const closeBtn = document.getElementById("closeBtn");
-
-  const toggleToCreate = document.getElementById("toggleToCreate");
-  const toggleToSignIn = document.getElementById("toggleToSignIn");
-  const createAccountBtn = document.getElementById("createAccountBtn");
-  const signInNowBtn = document.getElementById("signInNowBtn");
-
-  // Show login popup
-  loginBtn.addEventListener("click", () => {
-    overlay.classList.remove("hidden");
-    loginForm.classList.add("active");
-  });
-
-  // Hide login popup
-  closeBtn.addEventListener("click", () => {
-    overlay.classList.add("hidden");
-    loginForm.classList.remove("active");
-  });
-
-  // Toggle to Create Account form
-  toggleToCreate.addEventListener("click", () => {
-    signInNowBtn.classList.add("hidden");
-    createAccountBtn.classList.remove("hidden");
-    toggleToCreate.classList.add("hidden");
-    toggleToSignIn.classList.remove("hidden");
-  });
-
-  // Toggle to Sign In form
-  toggleToSignIn.addEventListener("click", () => {
-    createAccountBtn.classList.add("hidden");
-    signInNowBtn.classList.remove("hidden");
-    toggleToSignIn.classList.add("hidden");
-    toggleToCreate.classList.remove("hidden");
-  });
-});
-//logout
-window.addEventListener("DOMContentLoaded", () => {
-  // Load saved sites if logged in
-  if (localStorage.getItem("loggedIn") === "true") {
-    loadMonitoredSites();
-  }
-
-  checkAuthStatus(); // Update login/logout button visibility
-
-  // Show login popup
-  loginBtn.addEventListener("click", () => {
-    overlay.classList.remove("hidden");
-    loginForm.classList.add("active");
-  });
-
-  // Hide login popup
-  closeBtn.addEventListener("click", () => {
-    overlay.classList.add("hidden");
-    loginForm.classList.remove("active");
-  });
-
-  // Toggle to Create Account form
-  toggleToCreate.addEventListener("click", () => {
-    signInNowBtn.classList.add("hidden");
-    createBtn.classList.remove("hidden");
-    toggleToCreate.classList.add("hidden");
-    toggleToSignIn.classList.remove("hidden");
-  });
-
-  // Toggle to Sign In form
-  toggleToSignIn.addEventListener("click", () => {
-    createBtn.classList.add("hidden");
-    signInNowBtn.classList.remove("hidden");
-    toggleToSignIn.classList.add("hidden");
-    toggleToCreate.classList.remove("hidden");
-  });
-
-  // Logout
-  logoutBtn.addEventListener("click", () => {
-    localStorage.removeItem("loggedIn");
-    alert("Logged out successfully!");
-    checkAuthStatus();
-    list.innerHTML = ""; // clear monitored sites
-  });
-});
-
-// Auth Button Visibility Toggle
+// Auth UI toggle
 function checkAuthStatus() {
   const isLoggedIn = localStorage.getItem("loggedIn") === "true";
   if (loginBtn) loginBtn.classList.toggle("hidden", isLoggedIn);
   if (logoutBtn) logoutBtn.classList.toggle("hidden", !isLoggedIn);
 }
+
+// Logout
+logoutBtn.addEventListener("click", () => {
+  localStorage.removeItem("loggedIn");
+  localStorage.removeItem("monitoredSites");
+  list.innerHTML = "";
+  alert("Logged out successfully!");
+  checkAuthStatus();
+});
+
+// Initial load
+document.addEventListener("DOMContentLoaded", () => {
+  if (localStorage.getItem("loggedIn") === "true") {
+    loadMonitoredSites();
+  }
+  checkAuthStatus();
+});

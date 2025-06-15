@@ -47,7 +47,8 @@
     <section class="monitor-section">
       <h2>Add Website to Monitor</h2>
       <form id="monitorForm">
-        <input type="url" id="websiteUrl" placeholder="Enter website URL" required />
+  <input type="text" id="websiteName" placeholder="Enter website name" required />
+  <input type="url" id="websiteUrl" placeholder="Enter website URL" required />
         <select id="pingInterval" required>
           <option value="300000">Every 5 minutes</option>
           <option value="600000">Every 10 minutes</option>
@@ -59,6 +60,10 @@
 
       <div id="monitoredList" class="monitor-list"></div>
     </section>
+
+    <!--ping box-->
+    <div id="monitoredList" class="monitor-list"></div>
+
   </main>
 
 </body>

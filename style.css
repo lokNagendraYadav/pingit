@@ -1,229 +1,255 @@
-/* General Reset */
-* {
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
-  min-height: 100vh;
-  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Navbar */
 .navbar {
   position: fixed;
-  top: 0;
-  right: 0;
-  padding: 1rem;
-  z-index: 100;
-}
-
-.login-btn {
-  background: white;
-  color: #6a11cb;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-/* MBox Section */
-.mbox {
-  position: relative;
   width: 100%;
-  height: 30vh;
-  min-height: 150px;
+  height: 60px;
   background-color: #6a11cb;
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: white;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  justify-content: flex-end;
+  padding: 0 1rem;
+  z-index: 2;
+  border-radius: 20px 20px 0 0;
 }
 
-.mbox-text {
-  text-align: center;
+.login-btn {
+  background-color: white;
+  color: #6a11cb;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.mbox h1 {
-  font-size: 2.5rem;
+.login-btn:hover {
+  background-color: #ddd;
 }
 
-.mbox p {
-  font-size: 1rem;
-  margin-top: 0.5rem;
+#mainContent {
+  background: #ecdaf3;
+  padding-top: 35vh;
+  padding-bottom: 3rem;
+  min-height: 100vh;
 }
 
-/* Main Section */
-main {
-  padding: 2rem;
-  margin-top: 2rem;
-}
-
-/* Overlay */
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(5px);
-  background-color: rgba(0,0,0,0.4);
-  z-index: 99;
-  display: none;
+  z-index: 10;
+  opacity: 1;
+  transition: opacity 0.3s ease;
 }
 
-.overlay:not(.hidden) {
-  display: block;
+.overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
-/* Login Form Popup */
 .login-form {
   position: fixed;
-  top: 50%;
+  top: 20%;
   left: 50%;
-  width: 90%;
-  max-width: 400px;
-  padding: 2rem;
+  transform: translate(-50%, -20%) scale(0.5);
   background: white;
-  border-radius: 10px;
-  transform: translate(-50%, -50%) scale(0.5);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  width: 320px;
   opacity: 0;
-  transition: all 0.3s ease;
-  z-index: 100;
-  display: none;
+  z-index: 20;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  box-sizing: border-box;
 }
 
 .login-form.active {
-  opacity: 1;
   transform: translate(-50%, -50%) scale(1);
-}
-
-.login-form:not(.hidden) {
-  display: block;
+  top: 50%;
+  opacity: 1;
 }
 
 .login-form h2 {
-  text-align: center;
   margin-bottom: 1rem;
   color: #333;
+  text-align: center;
 }
 
 .login-form input {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.8rem;
   margin-bottom: 1rem;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.login-form input:hover {
+  border-color: #6a11cb;
+  box-shadow: 0 0 8px #6a11cbaa;
+}
+
+.login-form input:focus {
+  outline: none;
+  border-color: #5011a1;
+  box-shadow: 0 0 10px #5011a1cc;
 }
 
 .login-form button {
-  width: 100%;
-  padding: 0.75rem;
   margin-bottom: 0.5rem;
-  border: none;
+}
+
+.login-form button#createAccountBtn,
+.login-form button#signInNowBtn,
+.login-form button#toggleToSignIn,
+.login-form button#toggleToCreate {
+  width: 100%;
+  padding: 0.8rem;
   background-color: #6a11cb;
+  border: none;
   color: white;
-  border-radius: 5px;
-  cursor: pointer;
   font-weight: bold;
-  transition: 0.2s ease;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  font-size: 1rem;
 }
 
 .login-form button:hover {
-  background-color: #5011a1;
+  background-color: #3f0d7a;
+  box-shadow: 0 4px 12px rgba(63, 13, 122, 0.4);
 }
 
-.login-form .close-btn {
+.login-form:hover {
+  box-shadow: 0 0 20px rgba(106, 17, 203, 0.4);
+  transform: translate(-50%, -50%) scale(1.02);
+}
+
+.close-btn {
   position: absolute;
-  top: 10px;
-  right: 15px;
-  background: transparent;
-  font-size: 1.5rem;
+  top: 0.5rem;
+  right: 0.7rem;
+  background: none;
   border: none;
-  color: #999;
+  font-size: 1.8rem;
   cursor: pointer;
+  color: #999;
 }
 
-/* Toast */
-.toast {
-  position: fixed;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #333;
-  color: white;
-  padding: 1rem 2rem;
-  border-radius: 5px;
+.close-btn:hover {
+  color: #6a11cb;
+}
+
+.hidden {
   display: none;
-  z-index: 101;
 }
 
-.toast:not(.hidden) {
-  display: block;
+.mbox {
+  position: fixed;
+  width: 100%;
+  height: 30vh;
+  min-height: 200px;
+  background-color: #6a11cb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+  border-radius: 0 0 20px 20px;
+  z-index: 1;
+  text-align: center;
+  color: white;
 }
 
-/* Monitor Section */
+.mbox-text h1 {
+  font-size: 2.5rem;
+}
+
+.mbox-text p {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+
 .monitor-section {
-  margin-top: 3rem;
+  max-width: 600px;
+  margin: 3rem auto;
+  background: #fff;
   padding: 2rem;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  text-align: center;
 }
 
 .monitor-section h2 {
-  text-align: center;
   margin-bottom: 1rem;
+  color: #6a11cb;
 }
 
 #monitorForm {
   display: flex;
-  flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 #monitorForm input,
 #monitorForm select {
-  padding: 0.5rem;
-  font-size: 1rem;
+  flex: 1;
+  padding: 0.6rem;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 8px;
+  font-size: 1rem;
 }
 
 #monitorForm button {
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1rem;
   background-color: #6a11cb;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
+  font-weight: bold;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#monitorForm button:hover {
+  background-color: #5011a1;
 }
 
 .monitor-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  text-align: left;
 }
 
 .monitor-item {
   display: flex;
   justify-content: space-between;
-  padding: 0.75rem 1rem;
-  background: #f8f8f8;
-  border-radius: 5px;
-  border-left: 4px solid #ccc;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #eee;
 }
 
 .status {
   font-weight: bold;
-  text-transform: uppercase;
+}
+
+.status.checking {
+  color: gray;
 }
 
 .status.online {
@@ -232,8 +258,4 @@ main {
 
 .status.offline {
   color: red;
-}
-
-.status.checking {
-  color: orange;
 }

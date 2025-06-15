@@ -159,3 +159,95 @@ document.addEventListener("DOMContentLoaded", () => {
     loadMonitoredSites();
   }
 });
+//free toggle login
+document.addEventListener("DOMContentLoaded", function () {
+  const loginBtn = document.getElementById("loginBtn");
+  const overlay = document.getElementById("overlay");
+  const loginForm = document.getElementById("loginForm");
+  const closeBtn = document.getElementById("closeBtn");
+
+  const toggleToCreate = document.getElementById("toggleToCreate");
+  const toggleToSignIn = document.getElementById("toggleToSignIn");
+  const createAccountBtn = document.getElementById("createAccountBtn");
+  const signInNowBtn = document.getElementById("signInNowBtn");
+
+  // Show login popup
+  loginBtn.addEventListener("click", () => {
+    overlay.classList.remove("hidden");
+    loginForm.classList.add("active");
+  });
+
+  // Hide login popup
+  closeBtn.addEventListener("click", () => {
+    overlay.classList.add("hidden");
+    loginForm.classList.remove("active");
+  });
+
+  // Toggle to Create Account form
+  toggleToCreate.addEventListener("click", () => {
+    signInNowBtn.classList.add("hidden");
+    createAccountBtn.classList.remove("hidden");
+    toggleToCreate.classList.add("hidden");
+    toggleToSignIn.classList.remove("hidden");
+  });
+
+  // Toggle to Sign In form
+  toggleToSignIn.addEventListener("click", () => {
+    createAccountBtn.classList.add("hidden");
+    signInNowBtn.classList.remove("hidden");
+    toggleToSignIn.classList.add("hidden");
+    toggleToCreate.classList.remove("hidden");
+  });
+});
+//logout
+window.addEventListener("DOMContentLoaded", () => {
+  // Load saved sites if logged in
+  if (localStorage.getItem("loggedIn") === "true") {
+    loadMonitoredSites();
+  }
+
+  checkAuthStatus(); // Update login/logout button visibility
+
+  // Show login popup
+  loginBtn.addEventListener("click", () => {
+    overlay.classList.remove("hidden");
+    loginForm.classList.add("active");
+  });
+
+  // Hide login popup
+  closeBtn.addEventListener("click", () => {
+    overlay.classList.add("hidden");
+    loginForm.classList.remove("active");
+  });
+
+  // Toggle to Create Account form
+  toggleToCreate.addEventListener("click", () => {
+    signInNowBtn.classList.add("hidden");
+    createBtn.classList.remove("hidden");
+    toggleToCreate.classList.add("hidden");
+    toggleToSignIn.classList.remove("hidden");
+  });
+
+  // Toggle to Sign In form
+  toggleToSignIn.addEventListener("click", () => {
+    createBtn.classList.add("hidden");
+    signInNowBtn.classList.remove("hidden");
+    toggleToSignIn.classList.add("hidden");
+    toggleToCreate.classList.remove("hidden");
+  });
+
+  // Logout
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("loggedIn");
+    alert("Logged out successfully!");
+    checkAuthStatus();
+    list.innerHTML = ""; // clear monitored sites
+  });
+});
+
+// Auth Button Visibility Toggle
+function checkAuthStatus() {
+  const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+  if (loginBtn) loginBtn.classList.toggle("hidden", isLoggedIn);
+  if (logoutBtn) logoutBtn.classList.toggle("hidden", !isLoggedIn);
+}

@@ -259,3 +259,19 @@ body {
 .status.offline {
   color: red;
 }
+/*logout*/
+.logout-btn {
+  background-color: white;
+  color: #6a11cb;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #ddd;
+}

@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PingIt - Web Monitor</title>
+  <title>Animated Login Create Account</title>
   <link rel="stylesheet" href="style.css" />
-  <script defer src="script.js"></script>
+  <script defer src="Script.js"></script>
 </head>
 <body>
 
-  <!-- Navbar -->
+  <!-- FIXED NAVBAR + MBOX -->
   <nav class="navbar">
     <button id="loginBtn" class="login-btn">Login</button>
   </nav>
-
-  <!-- Main Banner Box -->
+  
   <nav class="mbox">
     <div class="mbox-text">
       <h1>PingIt..</h1>
@@ -23,10 +22,9 @@
   </nav>
 
   <main id="mainContent">
-    <!-- Overlay for login form -->
+    <!-- Form Popup + Monitor Section -->
     <div id="overlay" class="overlay hidden"></div>
 
-    <!-- Login/Create Form -->
     <div id="loginForm" class="login-form hidden">
       <h2 id="formTitle">Create Account</h2>
       <input type="email" id="emailInput" placeholder="Email" />
@@ -41,10 +39,8 @@
       <button id="closeBtn" class="close-btn">&times;</button>
     </div>
 
-    <!-- Toast notification -->
     <div id="toast" class="toast hidden"></div>
 
-    <!-- Website Monitor Section -->
     <section class="monitor-section">
       <h2>Add Website to Monitor</h2>
       <form id="monitorForm">

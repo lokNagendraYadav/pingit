@@ -12,9 +12,7 @@
   <!-- FIXED NAVBAR + MBOX -->
   <nav class="navbar">
     <button id="loginBtn" class="login-btn">Login</button>
-    
     <button class="logout-btn hidden" id="logoutBtn">Logout</button>
-
   </nav>
   
   <nav class="mbox">
@@ -25,45 +23,47 @@
   </nav>
 
   <main id="mainContent">
-    <!-- Form Popup + Monitor Section -->
+    <!-- Overlay -->
     <div id="overlay" class="overlay hidden"></div>
 
+    <!-- Login/Create Account Form -->
     <div id="loginForm" class="login-form hidden">
       <h2 id="formTitle">Create Account</h2>
       <input type="email" id="emailInput" placeholder="Email" />
       <input type="password" id="passwordInput" placeholder="Password" />
-
       <button id="createAccountBtn">Create Account</button>
       <button id="signInNowBtn" class="hidden">Sign In Now</button>
-
       <button id="toggleToSignIn">Sign In</button>
       <button id="toggleToCreate" class="hidden">Back to Create</button>
-
       <button id="closeBtn" class="close-btn">&times;</button>
     </div>
 
+    <!-- Toast -->
     <div id="toast" class="toast hidden"></div>
 
+    <!-- Input Form Section in Separate Box -->
     <section class="monitor-section">
       <h2>Add Website to Monitor</h2>
-      <form id="monitorForm">
-  <input type="text" id="websiteName" placeholder="Enter website name" required />
-  <input type="url" id="websiteUrl" placeholder="Enter website URL" required />
-        <select id="pingInterval" required>
-          <option value="300000">Every 5 minutes</option>
-          <option value="600000">Every 10 minutes</option>
-          <option value="900000">Every 15 minutes</option>
-          <option value="1800000">Every 30 minutes</option>
-        </select>
-        <button type="submit">Start Monitoring</button>
-      </form>
-
-      <div id="monitoredList" class="monitor-list"></div>
+      <div class="input-box">
+        <form id="monitorForm">
+          <input type="text" id="websiteName" placeholder="Enter website name" required />
+          <input type="url" id="websiteUrl" placeholder="Enter website URL" required />
+          <select id="pingInterval" required>
+            <option value="300000">Every 5 minutes</option>
+            <option value="600000">Every 10 minutes</option>
+            <option value="900000">Every 15 minutes</option>
+            <option value="1800000">Every 30 minutes</option>
+          </select>
+          <button type="submit">Start Monitoring</button>
+        </form>
+      </div>
     </section>
 
-    <!--ping box-->
-    <div id="monitoredList" class="monitor-list"></div>
-
+    <!-- Monitored Websites List in Separate Box -->
+    <section class="monitored-section">
+      <h2>Monitored Websites</h2>
+      <div id="monitoredList" class="monitor-list"></div>
+    </section>
   </main>
 
 </body>

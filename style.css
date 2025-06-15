@@ -228,7 +228,8 @@ body {
 .monitored-section {
   max-width: 800px;
   margin: 2rem auto;
-  background: white;
+  background: rgba(0, 0, 0, 0.108);
+  border: 2px solid white;
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);

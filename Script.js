@@ -5,18 +5,21 @@ const list = document.getElementById("monitoredList");
 const intervalSelect = document.getElementById("pingInterval");
 const createBtn = document.getElementById("createAccountBtn");
 const signInNowBtn = document.getElementById("signInNowBtn");
-
-
-// LOGIN POPUP LOGIC
 const loginBtn = document.getElementById("loginBtn");
 const loginForm = document.getElementById("loginForm");
 const overlay = document.getElementById("overlay");
 const closeBtn = document.getElementById("closeBtn");
+const formTitle = document.getElementById("formTitle");
+const toggleToSignIn = document.getElementById("toggleToSignIn");
+const toggleToCreate = document.getElementById("toggleToCreate");
 
+const backendURL = "https://pingit-backend.onrender.com"; // Moved to top
+
+// LOGIN POPUP LOGIC
 function openForm() {
   overlay.classList.remove("hidden");
   loginForm.classList.remove("hidden");
-  loginForm.offsetWidth; // trigger reflow
+  loginForm.offsetWidth;
   loginForm.classList.add("active");
   document.body.style.overflow = "hidden";
 }
@@ -34,54 +37,7 @@ loginBtn.addEventListener("click", openForm);
 overlay.addEventListener("click", closeForm);
 closeBtn.addEventListener("click", closeForm);
 
-// MAIN LOGIC – Real-Time Pinging
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
-  const url = input.value.trim();
-  const interval = parseInt(intervalSelect.value);
-
-  if (!url || isNaN(interval)) return;
-
-  const item = document.createElement("div");
-  item.className = "monitor-item";
-  item.innerHTML = `<span>${url}</span><span class="status checking">Checking...</span>`;
-  list.appendChild(item);
-
-  const statusElem = item.querySelector(".status");
-
-  const checkStatus = async () => {
-    statusElem.textContent = "Checking...";
-    statusElem.className = "status checking";
-
-    try {
-      const res = await fetch(`${backendURL}/ping?url=${encodeURIComponent(url)}`);
-
-
-
-      const json = await res.json();
-      if (json.success) {
-        statusElem.textContent = "Online";
-        statusElem.className = "status online";
-      } else {
-        statusElem.textContent = "Offline";
-        statusElem.className = "status offline";
-      }
-    } catch {
-      statusElem.textContent = "Offline";
-      statusElem.className = "status offline";
-    }
-  };
-
-  checkStatus(); // run immediately
-  setInterval(checkStatus, interval); // repeat based on user selection
-
-  input.value = "";
-});
-//login
-const backendURL = "https://pingit-backend.onrender.com";
-
-
-
+// LOGIN / REGISTER
 createBtn.addEventListener("click", async () => {
   const email = document.getElementById("emailInput").value;
   const password = document.getElementById("passwordInput").value;
@@ -89,11 +45,17 @@ createBtn.addEventListener("click", async () => {
   const res = await fetch(`${backendURL}/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ email, password })
   });
 
   const data = await res.json();
   alert(data.message || "Account created");
+
+  if (res.ok) {
+    localStorage.setItem("loggedIn", "true");
+    loadMonitoredSites();
+    closeForm();
+  }
 });
 
 signInNowBtn.addEventListener("click", async () => {
@@ -103,17 +65,20 @@ signInNowBtn.addEventListener("click", async () => {
   const res = await fetch(`${backendURL}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ email, password })
   });
 
   const data = await res.json();
   alert(data.message || "Logged in");
-});
-//toggle logic
-const formTitle = document.getElementById("formTitle");
-const toggleToSignIn = document.getElementById("toggleToSignIn");
-const toggleToCreate = document.getElementById("toggleToCreate");
 
+  if (res.ok) {
+    localStorage.setItem("loggedIn", "true");
+    loadMonitoredSites();
+    closeForm();
+  }
+});
+
+// TOGGLE CREATE/SIGN-IN
 toggleToSignIn.addEventListener("click", () => {
   formTitle.textContent = "Sign In";
   createBtn.classList.add("hidden");
@@ -128,4 +93,68 @@ toggleToCreate.addEventListener("click", () => {
   signInNowBtn.classList.add("hidden");
   toggleToSignIn.classList.remove("hidden");
   toggleToCreate.classList.add("hidden");
+});
+
+// MAIN MONITOR LOGIC
+function startMonitoring(url, interval) {
+  const item = document.createElement("div");
+  item.className = "monitor-item";
+  item.innerHTML = `<span>${url}</span><span class="status checking">Checking...</span>`;
+  list.appendChild(item);
+
+  const statusElem = item.querySelector(".status");
+
+  const checkStatus = async () => {
+    statusElem.textContent = "Checking...";
+    statusElem.className = "status checking";
+    try {
+      const res = await fetch(`${backendURL}/ping?url=${encodeURIComponent(url)}`);
+      const json = await res.json();
+      if (json.success) {
+        statusElem.textContent = "Online";
+        statusElem.className = "status online";
+      } else {
+        statusElem.textContent = "Offline";
+        statusElem.className = "status offline";
+      }
+    } catch {
+      statusElem.textContent = "Offline";
+      statusElem.className = "status offline";
+    }
+  };
+
+  checkStatus();
+  setInterval(checkStatus, interval);
+}
+
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  if (localStorage.getItem("loggedIn") !== "true") {
+    alert("Please log in to use the monitoring feature.");
+    return;
+  }
+
+  const url = input.value.trim();
+  const interval = parseInt(intervalSelect.value);
+  if (!url || isNaN(interval)) return;
+
+  const saved = JSON.parse(localStorage.getItem("monitoredSites") || "[]");
+  saved.push({ url, interval });
+  localStorage.setItem("monitoredSites", JSON.stringify(saved));
+
+  startMonitoring(url, interval);
+  input.value = "";
+});
+
+function loadMonitoredSites() {
+  list.innerHTML = ""; // clear duplicates on reload
+  const saved = JSON.parse(localStorage.getItem("monitoredSites") || "[]");
+  saved.forEach(({ url, interval }) => startMonitoring(url, interval));
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (localStorage.getItem("loggedIn") === "true") {
+    loadMonitoredSites();
+  }
 });

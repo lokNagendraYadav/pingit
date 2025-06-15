@@ -71,6 +71,7 @@ createBtn.addEventListener("click", async () => {
 
   if (res.ok) {
     localStorage.setItem("loggedIn", "true");
+    localStorage.setItem("userEmail", email);
     loadMonitoredSites();
     closeForm();
     checkAuthStatus();
@@ -93,6 +94,7 @@ signInNowBtn.addEventListener("click", async () => {
 
   if (res.ok) {
     localStorage.setItem("loggedIn", "true");
+    localStorage.setItem("userEmail", email);
     loadMonitoredSites();
     closeForm();
     checkAuthStatus();
@@ -140,7 +142,7 @@ function startMonitoring(name, url, interval) {
 }
 
 // Submit handler
-form.addEventListener("submit", function (e) {
+form.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   if (localStorage.getItem("loggedIn") !== "true") {
@@ -148,24 +150,39 @@ form.addEventListener("submit", function (e) {
     return;
   }
 
+  const email = localStorage.getItem("userEmail");
   const name = document.getElementById("websiteName").value.trim();
   const url = input.value.trim();
   const interval = parseInt(intervalSelect.value);
+
   if (!name || !url || isNaN(interval)) return;
 
-  const saved = JSON.parse(localStorage.getItem("monitoredSites") || "[]");
-  saved.push({ name, url, interval });
-  localStorage.setItem("monitoredSites", JSON.stringify(saved));
+  const res = await fetch(`${backendURL}/add-url`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, name, url, interval })
+  });
 
-  startMonitoring(name, url, interval);
-  form.reset();
+  const data = await res.json();
+  if (res.ok) {
+    startMonitoring(name, url, interval);
+    form.reset();
+  } else {
+    alert(data.message || "Failed to save URL.");
+  }
 });
 
 // Load stored monitors
-function loadMonitoredSites() {
+async function loadMonitoredSites() {
   list.innerHTML = "";
-  const saved = JSON.parse(localStorage.getItem("monitoredSites") || "[]");
-  saved.forEach(({ name, url, interval }) => startMonitoring(name, url, interval));
+  const email = localStorage.getItem("userEmail");
+  if (!email) return;
+
+  const res = await fetch(`${backendURL}/get-urls?email=${encodeURIComponent(email)}`);
+  const data = await res.json();
+  if (res.ok && Array.isArray(data.urls)) {
+    data.urls.forEach(({ name, url, interval }) => startMonitoring(name, url, interval));
+  }
 }
 
 // Auth UI toggle
@@ -178,7 +195,7 @@ function checkAuthStatus() {
 // Logout
 logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("loggedIn");
-  localStorage.removeItem("monitoredSites");
+  localStorage.removeItem("userEmail");
   list.innerHTML = "";
   alert("Logged out successfully!");
   checkAuthStatus();

@@ -112,6 +112,7 @@ function startMonitoring(name, url, interval) {
     <div class="preview-box">
       <iframe src="${url}" width="100%" height="100%" loading="lazy"></iframe>
     </div>
+    <button class="delete-btn">Delete</button>
   `;
 
   const statusSpan = card.querySelector(".status");
@@ -135,6 +136,28 @@ function startMonitoring(name, url, interval) {
       statusSpan.className = "status offline";
     }
   }
+
+  const deleteBtn = card.querySelector(".delete-btn");
+  deleteBtn.addEventListener("click", async () => {
+    const email = localStorage.getItem("userEmail");
+    try {
+      const res = await fetch(`${backendURL}/delete-url`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, url })
+      });
+
+      const data = await res.json();
+      alert(data.message || "URL deleted");
+
+      if (res.ok) {
+        card.remove();
+      }
+    } catch (error) {
+      alert("Failed to delete the monitor");
+      console.error(error);
+    }
+  });
 
   list.appendChild(card);
   checkStatus();

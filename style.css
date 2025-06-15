@@ -1,4 +1,3 @@
-/* RESET & GLOBAL */
 *,
 *::before,
 *::after {
@@ -16,6 +15,8 @@ body {
 /* NAVBAR */
 .navbar {
   position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 60px;
   background-color: #6a11cb;
@@ -23,8 +24,8 @@ body {
   align-items: center;
   justify-content: flex-end;
   padding: 0 1rem;
-  z-index: 20;
-  border-radius: 20px 20px 0 0;
+  z-index: 100;
+  border-radius: 0; /* fixed alignment */
 }
 .login-btn,
 .logout-btn {
@@ -59,10 +60,9 @@ body {
   justify-content: center;
   padding: 0 1rem;
   border-radius: 0 0 20px 20px;
-  z-index: 10;
+  z-index: 99;
   text-align: center;
   color: white;
-  pointer-events: none;
 }
 .mbox-text h1 {
   font-size: 2.5rem;
@@ -72,31 +72,10 @@ body {
   margin-top: 0.5rem;
 }
 
-/* MAIN SECTION */
+/* MAIN CONTENT */
 #mainContent {
-  padding-top: calc(60px + 30vh); /* navbar + mbox height */
+  padding-top: calc(30vh + 60px);
   padding-bottom: 3rem;
-  min-height: 100vh;
-  position: relative;
-  z-index: 100;
-}
-
-/* OVERLAY */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(5px);
-  z-index: 99;
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-.overlay.hidden {
-  opacity: 0;
-  pointer-events: none;
 }
 
 /* LOGIN FORM */
@@ -111,7 +90,7 @@ body {
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   width: 320px;
   opacity: 0;
-  z-index: 1000;
+  z-index: 200;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 .login-form.active {
@@ -176,6 +155,24 @@ body {
   color: #6a11cb;
 }
 
+/* OVERLAY */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  z-index: 150;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+.overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* MONITOR SECTION */
 .monitor-section {
   max-width: 800px;
@@ -190,8 +187,6 @@ body {
   margin-bottom: 1.5rem;
   color: #6a11cb;
 }
-
-/* FORM BOX FIXED */
 .input-box form {
   display: flex;
   flex-wrap: wrap;
@@ -228,7 +223,7 @@ body {
   max-width: 700px;
 }
 
-/* MONITORED LIST */
+/* MONITORED SECTION */
 .monitored-section {
   max-width: 800px;
   margin: 2rem auto;
@@ -245,21 +240,10 @@ body {
 .monitor-list {
   text-align: left;
 }
-.monitor-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.8rem 1rem;
-  border-bottom: 1px solid #eee;
-}
-.status {
-  font-weight: bold;
-}
-.status.checking {
-  color: gray;
-}
-.status.online {
-  color: green;
-}
-.status.offline {
-  color: red;
+.monitor-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
 }

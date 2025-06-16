@@ -199,6 +199,7 @@ body {
 .monitor-section h2 {
   margin-bottom: 1.5rem;
   color: #6a11cb;
+  
 }
 .input-box {
   background: white;
@@ -267,14 +268,83 @@ body {
 .monitored-section h2 {
   margin-bottom: 1rem;
   color: #6a11cb;
+   -webkit-text-stroke: 0.5px whitesmoke;
 }
 .monitor-list {
   text-align: left;
 }
 .monitor-card {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: space-between;
   background: white;
   padding: 1rem;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin-bottom: 1rem;
 }
+.monitor-card iframe {
+  flex: 1 1 50%;
+  height: 150px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.monitor-details {
+  flex: 1 1 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.monitor-details h3 {
+  font-size: 1.2rem;
+  color: #6a11cb;
+  margin: 0;
+  word-break: break-word;
+}
+
+.monitor-details p {
+  margin: 0;
+  color: #333;
+  word-break: break-word;
+}
+
+.monitor-details .status {
+  display: inline-block;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: white;
+  background-color: #ccc;
+  width: fit-content;
+}
+
+.monitor-details .status.success {
+  background-color: #28a745;
+}
+
+.monitor-details .status.fail {
+  background-color: #dc3545;
+}
+
+.monitor-details button {
+  padding: 0.6rem 1rem;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  width: fit-content;
+  transition: background-color 0.3s ease;
+}
+
+.monitor-details button:hover {
+  background-color: #b72b38;
+}
+

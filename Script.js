@@ -106,14 +106,19 @@ function startMonitoring(name, url, interval) {
   const card = document.createElement("div");
   card.className = "monitor-card";
   card.innerHTML = `
-    <h3>${name}</h3>
-    <p>${url}</p>
-    <p>Status: <span class="status checking">Checking...</span></p>
-    <div class="preview-box">
-      <iframe src="${url}" width="100%" height="100%" loading="lazy"></iframe>
+  <div class="monitor-card-content">
+    <div class="monitor-preview">
+      <iframe src="${url}" loading="lazy"></iframe>
     </div>
-    <button class="delete-btn">Delete</button>
-  `;
+    <div class="monitor-details">
+      <h3>${name}</h3>
+      <p>${url}</p>
+      <p>Status: <span class="status checking">Checking...</span></p>
+      <button class="delete-btn">Delete</button>
+    </div>
+  </div>
+`;
+
 
   const statusSpan = card.querySelector(".status");
 

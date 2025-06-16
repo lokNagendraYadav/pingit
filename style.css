@@ -349,3 +349,19 @@ body {
   50% { opacity: 0; }
 }
 
+.monitor-card button {
+  padding: 0.3rem 0.7rem;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.monitor-card button:hover {
+  background-color: #b72b38;
+}

@@ -267,8 +267,8 @@ body {
 }
 .monitored-section h2 {
   margin-bottom: 1rem;
-  color: #6a11cb;
-   -webkit-text-stroke: 0.5px whitesmoke;
+  color: #000000;
+   
 }
 .monitor-list {
   text-align: left;

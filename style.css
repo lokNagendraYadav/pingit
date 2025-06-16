@@ -274,20 +274,15 @@ body {
   text-align: left;
 }
 
-.monitor-card {
+.monitor-card-content {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 1rem;
-  background: white;
-  padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1rem;
+  gap: 1.5rem;
   flex-wrap: wrap;
 }
 
-.monitor-card iframe {
+.monitor-preview iframe {
   width: 280px;
   height: 180px;
   border: 1px solid #ccc;
@@ -295,44 +290,11 @@ body {
   flex-shrink: 0;
 }
 
-.monitor-card > :not(iframe) {
+.monitor-details {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 0.4rem;
 }
-.monitor-card button {
-  width: fit-content;
-  padding: 0.5rem 1rem;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 0.5rem;
-  transition: background-color 0.3s ease;
-}
 
-.monitor-card button:hover {
-  background-color: #b72b38;
-}
-
-.status {
-  display: inline-block;
-  padding: 0.2rem 0.6rem;
-  border-radius: 5px;
-  font-size: 0.85rem;
-  font-weight: bold;
-  background-color: #ccc;
-  color: white;
-}
-
-.status.success {
-  background-color: #28a745;
-}
-
-.status.fail {
-  background-color: #dc3545;
-}

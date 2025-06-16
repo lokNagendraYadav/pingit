@@ -277,49 +277,55 @@ body {
 .monitor-card {
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
   gap: 1rem;
   background: white;
   padding: 1rem;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin-bottom: 1rem;
-  align-items: center;
+  flex-wrap: wrap;
 }
 
 .monitor-card iframe {
-  width: 300px;
+  width: 280px;
   height: 180px;
   border: 1px solid #ccc;
   border-radius: 10px;
   flex-shrink: 0;
 }
 
-.monitor-details {
+.monitor-card > :not(iframe) {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
   justify-content: center;
+  gap: 0.4rem;
+}
+.monitor-card button {
+  width: fit-content;
+  padding: 0.5rem 1rem;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background-color 0.3s ease;
 }
 
-.monitor-details h3 {
-  font-size: 1.2rem;
-  color: #6a11cb;
-  margin: 0;
-}
-
-.monitor-details p {
-  margin: 0;
-  font-size: 1rem;
-  color: #333;
+.monitor-card button:hover {
+  background-color: #b72b38;
 }
 
 .status {
+  display: inline-block;
   padding: 0.2rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
+  border-radius: 5px;
+  font-size: 0.85rem;
   font-weight: bold;
-  background-color: #aaa;
+  background-color: #ccc;
   color: white;
 }
 
@@ -329,21 +335,4 @@ body {
 
 .status.fail {
   background-color: #dc3545;
-}
-
-.monitor-details button {
-  margin-top: 0.6rem;
-  padding: 0.6rem 1.2rem;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-  width: fit-content;
-  transition: background-color 0.3s ease;
-}
-
-.monitor-details button:hover {
-  background-color: #b72b38;
 }

@@ -360,6 +360,7 @@ body {
   cursor: pointer;
   margin-top: 0.5rem;
   transition: background-color 0.3s ease;
+  max-width: 5px;
 }
 
 .monitor-card button:hover {

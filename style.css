@@ -305,3 +305,47 @@ body {
   margin-bottom: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+/*status*/
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  border: 1.5px solid;
+  background-color: transparent;
+  color: white;
+  position: relative;
+}
+
+/* Online Status Style */
+.status.online {
+  color: #28a745;
+  border-color: #28a745;
+}
+
+/* Offline Status Style */
+.status.offline {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+/* Blinking Dot */
+.status::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: currentColor;
+  animation: blink 1s infinite;
+}
+
+/* Blinking animation */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+

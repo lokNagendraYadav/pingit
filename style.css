@@ -298,7 +298,7 @@ body {
   gap: 0.4rem;
 }
 
-.monitor-list {
+.monitor-card-content {
   background: white;
   border-radius: 12px;
   padding: 1rem;

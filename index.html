@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PingIt Login</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- FIXED NAVBAR + MBOX -->
+  <nav class="navbar">
+    <button id="loginBtn" class="login-btn">Login</button>
+    <button class="logout-btn hidden" id="logoutBtn">Logout</button>
+  </nav>
+  
+  <nav class="mbox">
+    
+  </nav>
+<div class="mbox-text">
+      <h1>PingIt..</h1>
+      <p>Your personal web monitoring service</p>
+    </div>
+  <main id="mainContent">
+    <!-- Overlay -->
+    <div id="overlay" class="overlay hidden"></div>
+
+    <!-- Login/Create Account Form -->
+    <div id="loginForm" class="login-form hidden">
+      <button id="closeBtn" class="close-btn">&times;</button>
+      <h2 id="formTitle">Create Account</h2>
+      <input type="email" id="emailInput" placeholder="Email" />
+      <input type="password" id="passwordInput" placeholder="Password" />
+      <button id="createAccountBtn">Create Account</button>
+      <button id="signInNowBtn" class="hidden">Sign In Now</button>
+      <div class="button-divider"></div>
+      <button id="toggleToSignIn">Sign In</button>
+      <button id="toggleToCreate" class="hidden">Back to Create</button>
+      
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast hidden"></div>
+
+    <!-- Input Form Section in Separate Box -->
+    <section class="monitor-section">
+      <h2>Add Website to Monitor</h2>
+      <div class="input-box">
+        <form id="monitorForm">
+          <input type="url" id="websiteUrl" placeholder="Enter website URL" required />
+          <input type="text" id="websiteName" placeholder="Enter website name" required />
+          
+          <select id="pingInterval" required>
+            <option value="300000">Every 5 minutes</option>
+            <option value="600000">Every 10 minutes</option>
+            <option value="900000">Every 15 minutes</option>
+            <option value="1800000">Every 30 minutes</option>
+          </select>
+          <button type="submit">Start Monitoring</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Monitored Websites List in Separate Box -->
+    <section class="monitored-section">
+      <h2>Monitored Websites</h2>
+      <div id="monitoredList" class="monitor-list"></div>
+    </section>
+
+
+
+
+  </main>
+
+  <script src="Script.js" defer></script>
+</body>
+</html>

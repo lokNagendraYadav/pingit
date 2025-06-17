@@ -146,11 +146,10 @@ function startMonitoring(name, url, interval) {
   deleteBtn.addEventListener("click", async () => {
     const email = localStorage.getItem("userEmail");
     try {
-      const res = await fetch(`${backendURL}/delete-url`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, url })
-      });
+      const res = await fetch(`${backendURL}/delete-url?id=${encodeURIComponent(card.dataset.id)}`, {
+  method: "DELETE"
+});
+
 
       const data = await res.json();
       alert(data.message || "URL deleted");

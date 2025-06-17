@@ -102,7 +102,7 @@ signInNowBtn.addEventListener("click", async () => {
 });
 
 // Monitor Logic
-function startMonitoring(name, url, interval) {
+function startMonitoring(name, url, interval, id) {
   const card = document.createElement("div");
   card.className = "monitor-card";
   card.dataset.id = id;
@@ -119,7 +119,6 @@ function startMonitoring(name, url, interval) {
     </div>
   </div>
 `;
-
 
   const statusSpan = card.querySelector(".status");
 
@@ -145,12 +144,10 @@ function startMonitoring(name, url, interval) {
 
   const deleteBtn = card.querySelector(".delete-btn");
   deleteBtn.addEventListener("click", async () => {
-    const email = localStorage.getItem("userEmail");
     try {
       const res = await fetch(`${backendURL}/delete-url?id=${encodeURIComponent(card.dataset.id)}`, {
-  method: "DELETE"
-});
-
+        method: "DELETE"
+      });
 
       const data = await res.json();
       alert(data.message || "URL deleted");
@@ -194,7 +191,7 @@ form.addEventListener("submit", async function (e) {
 
     const data = await res.json();
     if (res.ok) {
-      function startMonitoring(name, url, interval, id)
+      startMonitoring(name, url, interval, data.id);
       form.reset();
     } else {
       alert(data.message || "Failed to save URL.");

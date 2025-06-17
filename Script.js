@@ -142,24 +142,33 @@ function startMonitoring(name, url, interval, id) {
     }
   }
 
+  
   const deleteBtn = card.querySelector(".delete-btn");
-  deleteBtn.addEventListener("click", async () => {
-    try {
-      const res = await fetch(`${backendURL}/delete-url?id=${encodeURIComponent(card.dataset.id)}`, {
-        method: "DELETE"
-      });
+deleteBtn.addEventListener("click", async () => {
+  const confirmation = prompt(`To delete the web monitor permanently, type "${name}" and press delete`);
 
-      const data = await res.json();
-      alert(data.message || "URL deleted");
+  if (confirmation !== name) {
+    alert("Monitor name did not match. Deletion cancelled.");
+    return;
+  }
 
-      if (res.ok) {
-        card.remove();
-      }
-    } catch (error) {
-      alert("Failed to delete the monitor");
-      console.error(error);
+  try {
+    const res = await fetch(`${backendURL}/delete-url?id=${encodeURIComponent(card.dataset.id)}`, {
+      method: "DELETE"
+    });
+
+    const data = await res.json();
+    alert(data.message || "URL deleted");
+
+    if (res.ok) {
+      card.remove();
     }
-  });
+  } catch (error) {
+    alert("Failed to delete the monitor");
+    console.error(error);
+  }
+});
+
 
   list.appendChild(card);
   checkStatus();

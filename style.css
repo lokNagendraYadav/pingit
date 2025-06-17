@@ -10,11 +10,27 @@ body {
   padding: 0;
   background: #ecdaf3;
   font-family: Arial, sans-serif;
+  position: relative;
+  z-index: 0;
+}
+
+/* Pseudo-element to handle background image with opacity */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-image: url('bg1.png');
   background-repeat: repeat;
   background-size: 200px 200px;
   background-attachment: fixed;
+  opacity: 0.45; /* adjust as needed */
+  z-index: -100;  /* keep it behind content */
+  pointer-events: none; /* let clicks pass through */
 }
+
 
 /* NAVBAR */
 .navbar {

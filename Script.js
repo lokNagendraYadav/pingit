@@ -105,6 +105,7 @@ signInNowBtn.addEventListener("click", async () => {
 function startMonitoring(name, url, interval) {
   const card = document.createElement("div");
   card.className = "monitor-card";
+  card.dataset.id = id;
   card.innerHTML = `
   <div class="monitor-card-content">
     <div class="monitor-preview">
@@ -193,7 +194,7 @@ form.addEventListener("submit", async function (e) {
 
     const data = await res.json();
     if (res.ok) {
-      startMonitoring(name, url, interval);
+      function startMonitoring(name, url, interval, id)
       form.reset();
     } else {
       alert(data.message || "Failed to save URL.");
@@ -214,7 +215,7 @@ async function loadMonitoredSites() {
     const res = await fetch(`${backendURL}/get-urls?email=${encodeURIComponent(email)}`);
     const data = await res.json();
     if (res.ok && Array.isArray(data.urls)) {
-      data.urls.forEach(({ name, url, interval }) => startMonitoring(name, url, interval));
+      data.urls.forEach(({ name, url, interval, _id }) => startMonitoring(name, url, interval, _id));
     }
   } catch (error) {
     alert("Failed to load monitored sites.");

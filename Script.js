@@ -142,33 +142,31 @@ function startMonitoring(name, url, interval, id) {
     }
   }
 
-  
   const deleteBtn = card.querySelector(".delete-btn");
-deleteBtn.addEventListener("click", async () => {
-  const confirmation = prompt(`To delete the web monitor permanently, type "${name}" and press delete`);
+  deleteBtn.addEventListener("click", async () => {
+    const confirmation = prompt(`To delete the web monitor permanently, type "${name}" and press delete`);
 
-  if (confirmation !== name) {
-    alert("Monitor name did not match. Deletion cancelled.");
-    return;
-  }
-
-  try {
-    const res = await fetch(`${backendURL}/delete-url?id=${encodeURIComponent(card.dataset.id)}`, {
-      method: "DELETE"
-    });
-
-    const data = await res.json();
-    alert(data.message || "URL deleted");
-
-    if (res.ok) {
-      card.remove();
+    if (confirmation !== name) {
+      alert("Monitor name did not match. Deletion cancelled.");
+      return;
     }
-  } catch (error) {
-    alert("Failed to delete the monitor");
-    console.error(error);
-  }
-});
 
+    try {
+      const res = await fetch(`${backendURL}/delete-url?id=${encodeURIComponent(card.dataset.id)}`, {
+        method: "DELETE"
+      });
+
+      const data = await res.json();
+      alert(data.message || "URL deleted");
+
+      if (res.ok) {
+        card.remove();
+      }
+    } catch (error) {
+      alert("Failed to delete the monitor");
+      console.error(error);
+    }
+  });
 
   list.appendChild(card);
   checkStatus();
@@ -251,4 +249,19 @@ document.addEventListener("DOMContentLoaded", () => {
     loadMonitoredSites();
   }
   checkAuthStatus();
+
+
 });
+//intro
+
+//
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    const intro = document.getElementById("intro");
+    if (intro) {
+      intro.style.display = "none";
+    }
+  }, 2600); // wait for animation to complete
+});
+
+

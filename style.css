@@ -38,14 +38,28 @@ body::before {
   top: 0;
   left: 0;
   width: 100%;
+  height: 50px;
   background-color: #6a11cb;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 0.5rem 1rem;
-  z-index: 100;
+  padding: 0;
+  z-index: 1000;
   border-radius: 0;
+  margin: 0;
 }
+.navbar.fade-in {
+  opacity: 0;
+  animation: fadeInNav 0.8s ease forwards;
+}
+
+@keyframes fadeInNav {
+  to {
+    opacity: 1;
+  }
+}
+
+
 .login-btn,
 .logout-btn {
   background-color: white;
@@ -66,55 +80,71 @@ body::before {
   display: none;
 }
 
+.login-btn.slide-down {
+  transform: translateY(-100%);
+  animation: slideDownBtn 0.6s ease forwards;
+  animation-delay: 0;
+}
+
+@keyframes slideDownBtn {
+  to {
+    transform: translateY(0);
+  }
+}
+
+
 /* MBOX */
-.mbox-container {
+.mbox {
+  position: fixed;
+  top: 50px; /* height of navbar */
+  left: 0;
   width: 100%;
-  height: 30vh;
-  min-height: 200px;
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  height: calc(30vh); /* fixed height */
+  background: linear-gradient(to bottom, #6a11cb, #8e54e9);
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 0 0 20px 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  text-align: center;
+  z-index: -100;
   color: white;
-  position: relative;
-  z-index: 1;
+  overflow: hidden;
 }
 
 .mbox-text {
-  padding-top: 1rem;
+  position: absolute;
+  top: 90px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: white;
+  
+}
+.mbox-text h1 {
+  font-family: 'Segoe Script', 'Brush Script MT', cursive;
+  font-size: 2.5rem;
+  margin: 0;
 }
 
+
+
 .mbox-text h1 {
-  font-size: 3rem;
+  font-size: 2.5rem;
   margin: 0;
 }
 
 .mbox-text p {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   margin-top: 0.5rem;
 }
 
-.glow {
-  animation: glow 2s ease-in-out infinite alternate;
-}
 
-@keyframes glow {
-  from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #6a11cb;
-  }
-  to {
-    text-shadow: 0 0 20px #fff, 0 0 30px #6a11cb, 0 0 40px #6a11cb;
-  }
-}
 
 /* MAIN CONTENT */
 #mainContent {
-  padding-top: 20vh;
+  padding-top: calc(30vh + 50px + 2rem); /* mbox height + navbar + extra spacing */
   padding-bottom: 3rem;
 }
+
 
 /* LOGIN FORM */
 .login-form {
@@ -401,4 +431,98 @@ body::before {
 
 .monitor-card button:hover {
   background-color: #b72b38;
+}
+/*intro*/
+/* INTRO ANIMATION */
+.intro {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(to bottom, #6a11cb, #8e54e9);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: shrinkIntro 2.5s ease forwards;
+  border-radius: 0;
+  overflow: hidden;
+  
+}
+
+.intro-text {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%); /* Center vertically at start */
+  text-align: center;
+  color: white;
+  animation: moveIntroText 2.5s ease forwards;
+}
+@keyframes moveIntroText {
+  0% {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  100% {
+    top: 90px; /* Matches navbar height */
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes shrinkIntro {
+  0% {
+    height: 100vh;
+    border-radius: 0;
+  }
+  100% {
+    height: calc(30vh + 50px); /* 30vh mbox + 50px navbar */
+    border-radius: 0 0 20px 20px;
+  }
+}
+
+.intro-text h1 {
+  font-size: 2.5rem;
+  margin: 0;
+}
+
+.intro-text p {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+/*intro text*/
+/* Keyframe for drawing stroke */
+@keyframes drawText {
+  0% {
+    stroke-dashoffset: 100%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+/* Style for animated SVG text */
+.intro-text svg {
+  width: 100%;
+  height: 150px;
+}
+
+.intro-text text {
+  fill: none;
+  stroke: white;
+  stroke-width: 2;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: drawText 3s ease forwards;
+  font-size: 60px;
+  font-family: 'Segoe Script', 'Brush Script MT', cursive;
+  text-anchor: middle;
 }

@@ -313,34 +313,34 @@ document.addEventListener('mousemove', (e) => {
 //db connection
 
 
-document.getElementById('contactForm').addEventListener('submit', async function (e) {
-  e.preventDefault(); // ✅ Prevent page reload
+document.querySelector('.contact-form').addEventListener('submit', async function (e) {
+  e.preventDefault();
 
   const form = e.target;
-  const formData = {
+
+  const data = {
     name: form.name.value,
     phone: form.phone.value,
     email: form.email.value,
-    message: form.message.value,
+    message: form.message.value
   };
 
   try {
-    const response = await fetch('https://pingit-backend.onrender.com/api/contact', {
+    const response = await fetch('https://contact-backend-br8j.onrender.com/api/contact', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
     });
 
     if (response.ok) {
-      alert('✅ Message sent successfully!');
-      form.reset();
+      alert('Message sent successfully!');
+      form.reset(); // clears the form
     } else {
-      alert('❌ Failed to send message');
+      alert('Error sending message.');
     }
-  } catch (err) {
-    alert('⚠️ Server error');
-    console.error(err);
+  } catch (error) {
+    alert('Server error: ' + error.message);
   }
 });
-
-

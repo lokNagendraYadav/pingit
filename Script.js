@@ -289,7 +289,56 @@ document.addEventListener('mousemove', (e) => {
     icon.style.transform = `scale(${scale})`;
   });
 });
+//conatct
+
+  function adjustContactHeight() {
+    const navHeight = document.querySelector('.navbar')?.offsetHeight || 0;
+    const mboxHeight = document.querySelector('.mbox')?.offsetHeight || 0;
+    const windowHeight = window.innerHeight;
+    const contact = document.querySelector('.contact-section');
+    const availableHeight = windowHeight - navHeight - mboxHeight;
+
+    if (contact) {
+      contact.style.minHeight = `${availableHeight}px`;
+      contact.style.display = 'flex';
+      contact.style.flexDirection = 'column';
+      contact.style.justifyContent = 'center';
+    }
+  }
+
+  window.addEventListener('load', adjustContactHeight);
+  window.addEventListener('resize', adjustContactHeight);
 
 
+//db connection
 
+document.getElementById('contactForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+
+  const form = e.target;
+  const formData = {
+    name: form.name.value,
+    phone: form.phone.value,
+    email: form.email.value,
+    message: form.message.value,
+  };
+
+  try {
+    const response = await fetch('https://contact-backend-br8j.onrender.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
+
+    if (response.ok) {
+      alert('✅ Message sent successfully!');
+      form.reset();
+    } else {
+      alert('❌ Failed to send message');
+    }
+  } catch (err) {
+    alert('⚠️ Server error');
+    console.error(err);
+  }
+});
 

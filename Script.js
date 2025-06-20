@@ -312,8 +312,9 @@ document.addEventListener('mousemove', (e) => {
 
 //db connection
 
+
 document.getElementById('contactForm').addEventListener('submit', async function (e) {
-  e.preventDefault();
+  e.preventDefault(); // ✅ Prevent page reload
 
   const form = e.target;
   const formData = {
@@ -324,7 +325,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
   };
 
   try {
-    const response = await fetch('https://contact-backend-br8j.onrender.com', {
+    const response = await fetch('https://pingit-backend.onrender.com/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
@@ -341,4 +342,5 @@ document.getElementById('contactForm').addEventListener('submit', async function
     console.error(err);
   }
 });
+
 

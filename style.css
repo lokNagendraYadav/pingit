@@ -526,3 +526,76 @@ body::before {
   font-family: 'Segoe Script', 'Brush Script MT', cursive;
   text-anchor: middle;
 }
+/*othere services*/
+/* Title outside the box */
+.toolbar-title {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #6a11cb;
+  margin-bottom: 1rem;
+}
+
+/* Toolbar container box */
+.toolbar {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  background: #ffffff41;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+/* Toolbar icons */
+.tool-icon img {
+  width: 70px;
+  height: 70px;
+  border: 2px solid #fdfdfe;
+  border-radius: 8px;
+  padding: 5px;
+  background: white;
+  transition: transform 0.2s ease-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  margin: 10px;
+}
+
+
+.tool-icon img:hover {
+  transform: scale(1.1);
+}
+.toolbar-section {
+  text-align: center;
+  padding: 2rem;
+}
+.tool-icon {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
+.icon-label {
+  position: absolute;
+  top: 100%; /* place below the icon */
+  left: 50%;
+  transform: translateX(-50%) translateY(13px); /* adjust vertical spacing */
+  font-size: 0.8rem;
+  color: #333;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none; /* optional: allow clicks to pass through */
+  white-space: nowrap;
+  font-family: 'Segoe UI', sans-serif;  /* Custom font */
+  font-size: 0.85rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+font-weight: 600;
+}
+
+.tool-icon:hover .icon-label {
+  opacity: 1;
+  
+}
+

@@ -264,4 +264,32 @@ window.addEventListener("load", () => {
   }, 2600); // wait for animation to complete
 });
 
+//navbar
+
+  window.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+      document.getElementById("loginBtn").classList.add("slide-down");
+    }, 2500);
+  });
+
+//logos
+
+const icons = document.querySelectorAll('.tool-icon img');
+const sensitivity = 400; // how far the pointer should affect icons
+
+document.addEventListener('mousemove', (e) => {
+  icons.forEach(icon => {
+    const rect = icon.getBoundingClientRect();
+    const iconX = rect.left + rect.width / 2;
+    const iconY = rect.top + rect.height / 2;
+    const dx = e.clientX - iconX;
+    const dy = e.clientY - iconY;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    const scale = Math.max(1, 1.5 - distance / sensitivity);
+    icon.style.transform = `scale(${scale})`;
+  });
+});
+
+
+
 

@@ -117,7 +117,7 @@ signInNowBtn.addEventListener("click", async () => {
     checkAuthStatus();
   }
 });
-
+//moniter
 function startMonitoring(name, url, interval, id) {
   const card = document.createElement("div");
   card.className = "monitor-card";
@@ -166,6 +166,7 @@ function startMonitoring(name, url, interval, id) {
     const cancelBtn = document.getElementById("cancelDeleteBtn");
 
     confirmInput.value = "";
+    document.getElementById("monitorNameHighlight").textContent = `"${name}"`;
     modal.classList.remove("hidden");
 
     function cleanup() {

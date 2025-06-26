@@ -399,3 +399,11 @@ function showModal(title, message, expected = "") {
     };
   });
 }
+//js mess
+function showToast(message, type = "info") {
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  document.getElementById("toastContainer").appendChild(toast);
+  setTimeout(() => toast.remove(), 3500);
+}

@@ -67,7 +67,7 @@ createBtn.addEventListener("click", async () => {
   });
 
   const data = await res.json();
-  alert(data.message || "Account created");
+  showToast(data.message || "Account created", res.ok ? "success" : "error");
 
   if (res.ok) {
     localStorage.setItem("loggedIn", "true");
@@ -90,7 +90,7 @@ signInNowBtn.addEventListener("click", async () => {
   });
 
   const data = await res.json();
-  alert(data.message || "Logged in");
+  showToast(data.message || "Logged in", res.ok ? "success" : "error");
 
   if (res.ok) {
     localStorage.setItem("loggedIn", "true");
@@ -144,10 +144,10 @@ function startMonitoring(name, url, interval, id) {
 
   const deleteBtn = card.querySelector(".delete-btn");
   deleteBtn.addEventListener("click", async () => {
-    const confirmation = prompt(`To delete the web monitor permanently, type "${name}" and press delete`);
+    const confirmed = await showModal("Confirm Deletion", `Type "${name}" to confirm deletion:`, name);
 
-    if (confirmation !== name) {
-      alert("Monitor name did not match. Deletion cancelled.");
+    if (!confirmed) {
+      showToast("Monitor name did not match. Deletion cancelled.", "warning");
       return;
     }
 
@@ -157,13 +157,13 @@ function startMonitoring(name, url, interval, id) {
       });
 
       const data = await res.json();
-      alert(data.message || "URL deleted");
+      showToast(data.message || "URL deleted", res.ok ? "success" : "error");
 
       if (res.ok) {
         card.remove();
       }
     } catch (error) {
-      alert("Failed to delete the monitor");
+      showToast("Failed to delete the monitor", "error");
       console.error(error);
     }
   });
@@ -178,7 +178,7 @@ form.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   if (localStorage.getItem("loggedIn") !== "true") {
-    alert("Please log in to use the monitoring feature.");
+    showToast("Please log in to use the monitoring feature.", "warning");
     return;
   }
 
@@ -201,10 +201,10 @@ form.addEventListener("submit", async function (e) {
       startMonitoring(name, url, interval, data.id);
       form.reset();
     } else {
-      alert(data.message || "Failed to save URL.");
+      showToast(data.message || "Failed to save URL.", "error");
     }
   } catch (error) {
-    alert("Server error");
+    showToast("Server error", "error");
     console.error(error);
   }
 });
@@ -222,7 +222,7 @@ async function loadMonitoredSites() {
       data.urls.forEach(({ name, url, interval, _id }) => startMonitoring(name, url, interval, _id));
     }
   } catch (error) {
-    alert("Failed to load monitored sites.");
+    showToast("Failed to load monitored sites.", "error");
     console.error(error);
   }
 }
@@ -239,7 +239,7 @@ logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("loggedIn");
   localStorage.removeItem("userEmail");
   list.innerHTML = "";
-  alert("Logged out successfully!");
+  showToast("Logged out successfully!", "success");
   checkAuthStatus();
 });
 
@@ -249,34 +249,28 @@ document.addEventListener("DOMContentLoaded", () => {
     loadMonitoredSites();
   }
   checkAuthStatus();
-
-
 });
-//intro
 
-//
+// Intro
 window.addEventListener("load", () => {
   setTimeout(() => {
     const intro = document.getElementById("intro");
     if (intro) {
       intro.style.display = "none";
     }
-  }, 2600); // wait for animation to complete
+  }, 2600);
 });
 
-//navbar
+// Navbar animation
+window.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    document.getElementById("loginBtn").classList.add("slide-down");
+  }, 2500);
+});
 
-  window.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => {
-      document.getElementById("loginBtn").classList.add("slide-down");
-    }, 2500);
-  });
-
-//logos
-
+// Tool icon magnetic effect
 const icons = document.querySelectorAll('.tool-icon img');
-const sensitivity = 400; // how far the pointer should affect icons
-
+const sensitivity = 400;
 document.addEventListener('mousemove', (e) => {
   icons.forEach(icon => {
     const rect = icon.getBoundingClientRect();
@@ -289,35 +283,30 @@ document.addEventListener('mousemove', (e) => {
     icon.style.transform = `scale(${scale})`;
   });
 });
-//conatct
 
-  function adjustContactHeight() {
-    const navHeight = document.querySelector('.navbar')?.offsetHeight || 0;
-    const mboxHeight = document.querySelector('.mbox')?.offsetHeight || 0;
-    const windowHeight = window.innerHeight;
-    const contact = document.querySelector('.contact-section');
-    const availableHeight = windowHeight - navHeight - mboxHeight;
+// Contact Section height fix
+function adjustContactHeight() {
+  const navHeight = document.querySelector('.navbar')?.offsetHeight || 0;
+  const mboxHeight = document.querySelector('.mbox')?.offsetHeight || 0;
+  const windowHeight = window.innerHeight;
+  const contact = document.querySelector('.contact-section');
+  const availableHeight = windowHeight - navHeight - mboxHeight;
 
-    if (contact) {
-      contact.style.minHeight = `${availableHeight}px`;
-      contact.style.display = 'flex';
-      contact.style.flexDirection = 'column';
-      contact.style.justifyContent = 'center';
-    }
+  if (contact) {
+    contact.style.minHeight = `${availableHeight}px`;
+    contact.style.display = 'flex';
+    contact.style.flexDirection = 'column';
+    contact.style.justifyContent = 'center';
   }
+}
 
-  window.addEventListener('load', adjustContactHeight);
-  window.addEventListener('resize', adjustContactHeight);
+window.addEventListener('load', adjustContactHeight);
+window.addEventListener('resize', adjustContactHeight);
 
-
-//db connection
-
-
+// Contact Form submission
 document.querySelector('.contact-form').addEventListener('submit', async function (e) {
   e.preventDefault();
-
   const form = e.target;
-
   const data = {
     name: form.name.value,
     phone: form.phone.value,
@@ -328,19 +317,25 @@ document.querySelector('.contact-form').addEventListener('submit', async functio
   try {
     const response = await fetch('https://contact-backend-br8j.onrender.com/api/contact', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
 
     if (response.ok) {
-      alert('Message sent successfully!');
-      form.reset(); // clears the form
+      showToast('Message sent successfully!', 'success');
+      form.reset();
     } else {
-      alert('Error sending message.');
+      showToast('Error sending message.', 'error');
     }
   } catch (error) {
-    alert('Server error: ' + error.message);
+    showToast('Server error: ' + error.message, 'error');
   }
+});
+
+// Animate intro class
+window.addEventListener("DOMContentLoaded", () => {
+  const intro = document.getElementById("intro");
+  setTimeout(() => {
+    intro.classList.add("animate");
+  }, 2000);
 });

@@ -130,5 +130,21 @@
   </main>
 
   <script src="Script.js" defer></script>
+  <!-- Toast Container -->
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- Modal -->
+<div id="customModal" class="modal hidden">
+  <div class="modal-content">
+    <h3 id="modalTitle">Confirm</h3>
+    <p id="modalMessage">Please confirm this action</p>
+    <input type="text" id="modalInput" placeholder="Type name to confirm..." />
+    <div class="modal-actions">
+      <button id="modalCancel">Cancel</button>
+      <button id="modalConfirm">Confirm</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

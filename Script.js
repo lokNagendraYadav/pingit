@@ -118,24 +118,23 @@ signInNowBtn.addEventListener("click", async () => {
   }
 });
 
-// Monitor Logic
 function startMonitoring(name, url, interval, id) {
   const card = document.createElement("div");
   card.className = "monitor-card";
   card.dataset.id = id;
   card.innerHTML = `
-  <div class="monitor-card-content">
-    <div class="monitor-preview">
-      <iframe src="${url}" loading="lazy"></iframe>
+    <div class="monitor-card-content">
+      <div class="monitor-preview">
+        <iframe src="${url}" loading="lazy"></iframe>
+      </div>
+      <div class="monitor-details">
+        <h3>${name}</h3>
+        <p>${url}</p>
+        <p>Status: <span class="status checking">Checking...</span></p>
+        <button class="delete-btn">Delete</button>
+      </div>
     </div>
-    <div class="monitor-details">
-      <h3>${name}</h3>
-      <p>${url}</p>
-      <p>Status: <span class="status checking">Checking...</span></p>
-      <button class="delete-btn">Delete</button>
-    </div>
-  </div>
-`;
+  `;
 
   const statusSpan = card.querySelector(".status");
 
@@ -160,55 +159,55 @@ function startMonitoring(name, url, interval, id) {
   }
 
   const deleteBtn = card.querySelector(".delete-btn");
-deleteBtn.addEventListener("click", () => {
-  const modal = document.getElementById("deleteModal");
-  const confirmInput = document.getElementById("confirmNameInput");
-  const confirmBtn = document.getElementById("confirmDeleteBtn");
-  const cancelBtn = document.getElementById("cancelDeleteBtn");
+  deleteBtn.addEventListener("click", () => {
+    const modal = document.getElementById("deleteModal");
+    const confirmInput = document.getElementById("confirmNameInput");
+    const confirmBtn = document.getElementById("confirmDeleteBtn");
+    const cancelBtn = document.getElementById("cancelDeleteBtn");
 
-  confirmInput.value = "";
-  modal.classList.remove("hidden");
+    confirmInput.value = "";
+    modal.classList.remove("hidden");
 
-  // Cleanup and hide modal
-  function cleanup() {
-    modal.classList.add("hidden");
-    confirmBtn.removeEventListener("click", confirmHandler);
-    cancelBtn.removeEventListener("click", cancelHandler);
-  }
-
-  // Confirm button handler
-  function confirmHandler() {
-    if (confirmInput.value.trim() !== name) {
-      showToast("Monitor name did not match. Deletion cancelled.", "error");
-      cleanup();
-      return;
+    function cleanup() {
+      modal.classList.add("hidden");
+      confirmBtn.removeEventListener("click", onConfirm);
+      cancelBtn.removeEventListener("click", onCancel);
     }
 
-    fetch(`${backendURL}/delete-url?id=${encodeURIComponent(card.dataset.id)}`, {
-      method: "DELETE"
-    })
-      .then(res => res.json().then(data => ({ ok: res.ok, data })))
-      .then(({ ok, data }) => {
-        showToast(data.message || "URL deleted", ok ? "success" : "error");
-        if (ok) card.remove();
+    function onConfirm() {
+      if (confirmInput.value.trim() !== name) {
+        showToast("Monitor name did not match. Deletion cancelled.", "error");
         cleanup();
+        return;
+      }
+
+      fetch(`${backendURL}/delete-url?id=${encodeURIComponent(card.dataset.id)}`, {
+        method: "DELETE"
       })
-      .catch(error => {
-        showToast("Failed to delete the monitor", "error");
-        console.error(error);
-        cleanup();
-      });
-  }
+        .then(res => res.json().then(data => ({ ok: res.ok, data })))
+        .then(({ ok, data }) => {
+          showToast(data.message || "URL deleted", ok ? "success" : "error");
+          if (ok) card.remove();
+          cleanup();
+        })
+        .catch(error => {
+          showToast("Failed to delete the monitor", "error");
+          console.error(error);
+          cleanup();
+        });
+    }
 
-  // Cancel button handler
-  function cancelHandler() {
-    cleanup();
-  }
+    function onCancel() {
+      cleanup();
+    }
 
-  confirmBtn.addEventListener("click", confirmHandler);
-  cancelBtn.addEventListener("click", cancelHandler);
-});
+    confirmBtn.addEventListener("click", onConfirm);
+    cancelBtn.addEventListener("click", onCancel);
+  });
 
+  list.appendChild(card);
+  checkStatus();
+  setInterval(checkStatus, interval);
 }
 
 // Submit handler

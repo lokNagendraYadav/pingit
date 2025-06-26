@@ -1,3 +1,20 @@
+// Insert toast container into the DOM if not present
+if (!document.getElementById("toastContainer")) {
+  const toastContainer = document.createElement("div");
+  toastContainer.id = "toastContainer";
+  toastContainer.className = "toast-container";
+  document.body.appendChild(toastContainer);
+}
+
+// Show toast messages
+function showToast(message, type = "info") {
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  document.getElementById("toastContainer").appendChild(toast);
+  setTimeout(() => toast.remove(), 3500);
+}
+
 // DOM Elements
 const form = document.getElementById("monitorForm");
 const input = document.getElementById("websiteUrl");
@@ -67,7 +84,7 @@ createBtn.addEventListener("click", async () => {
   });
 
   const data = await res.json();
-  alert(data.message || "Account created");
+  showToast(data.message || "Account created", res.ok ? "success" : "error");
 
   if (res.ok) {
     localStorage.setItem("loggedIn", "true");
@@ -90,7 +107,7 @@ signInNowBtn.addEventListener("click", async () => {
   });
 
   const data = await res.json();
-  alert(data.message || "Logged in");
+  showToast(data.message || "Logged in", res.ok ? "success" : "error");
 
   if (res.ok) {
     localStorage.setItem("loggedIn", "true");
@@ -147,7 +164,7 @@ function startMonitoring(name, url, interval, id) {
     const confirmation = prompt(`To delete the web monitor permanently, type "${name}" and press delete`);
 
     if (confirmation !== name) {
-      alert("Monitor name did not match. Deletion cancelled.");
+      showToast("Monitor name did not match. Deletion cancelled.", "error");
       return;
     }
 
@@ -157,13 +174,13 @@ function startMonitoring(name, url, interval, id) {
       });
 
       const data = await res.json();
-      alert(data.message || "URL deleted");
+      showToast(data.message || "URL deleted", res.ok ? "success" : "error");
 
       if (res.ok) {
         card.remove();
       }
     } catch (error) {
-      alert("Failed to delete the monitor");
+      showToast("Failed to delete the monitor", "error");
       console.error(error);
     }
   });
@@ -178,7 +195,7 @@ form.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   if (localStorage.getItem("loggedIn") !== "true") {
-    alert("Please log in to use the monitoring feature.");
+    showToast("Please log in to use the monitoring feature.", "error");
     return;
   }
 
@@ -200,11 +217,12 @@ form.addEventListener("submit", async function (e) {
     if (res.ok) {
       startMonitoring(name, url, interval, data.id);
       form.reset();
+      showToast("Monitoring started!", "success");
     } else {
-      alert(data.message || "Failed to save URL.");
+      showToast(data.message || "Failed to save URL.", "error");
     }
   } catch (error) {
-    alert("Server error");
+    showToast("Server error", "error");
     console.error(error);
   }
 });
@@ -222,7 +240,7 @@ async function loadMonitoredSites() {
       data.urls.forEach(({ name, url, interval, _id }) => startMonitoring(name, url, interval, _id));
     }
   } catch (error) {
-    alert("Failed to load monitored sites.");
+    showToast("Failed to load monitored sites.", "error");
     console.error(error);
   }
 }
@@ -239,7 +257,7 @@ logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("loggedIn");
   localStorage.removeItem("userEmail");
   list.innerHTML = "";
-  alert("Logged out successfully!");
+  showToast("Logged out successfully!", "info");
   checkAuthStatus();
 });
 
@@ -249,33 +267,28 @@ document.addEventListener("DOMContentLoaded", () => {
     loadMonitoredSites();
   }
   checkAuthStatus();
-
-
 });
-//intro
 
-//
+// Intro animation
 window.addEventListener("load", () => {
   setTimeout(() => {
     const intro = document.getElementById("intro");
     if (intro) {
       intro.style.display = "none";
     }
-  }, 2600); // wait for animation to complete
+  }, 2600);
 });
 
-//navbar
+// Navbar animation
+window.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    document.getElementById("loginBtn").classList.add("slide-down");
+  }, 2500);
+});
 
-  window.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => {
-      document.getElementById("loginBtn").classList.add("slide-down");
-    }, 2500);
-  });
-
-//logos
-
+// Toolbar hover animation
 const icons = document.querySelectorAll('.tool-icon img');
-const sensitivity = 400; // how far the pointer should affect icons
+const sensitivity = 400;
 
 document.addEventListener('mousemove', (e) => {
   icons.forEach(icon => {
@@ -289,30 +302,27 @@ document.addEventListener('mousemove', (e) => {
     icon.style.transform = `scale(${scale})`;
   });
 });
-//conatct
 
-  function adjustContactHeight() {
-    const navHeight = document.querySelector('.navbar')?.offsetHeight || 0;
-    const mboxHeight = document.querySelector('.mbox')?.offsetHeight || 0;
-    const windowHeight = window.innerHeight;
-    const contact = document.querySelector('.contact-section');
-    const availableHeight = windowHeight - navHeight - mboxHeight;
+// Adjust contact section height
+function adjustContactHeight() {
+  const navHeight = document.querySelector('.navbar')?.offsetHeight || 0;
+  const mboxHeight = document.querySelector('.mbox')?.offsetHeight || 0;
+  const windowHeight = window.innerHeight;
+  const contact = document.querySelector('.contact-section');
+  const availableHeight = windowHeight - navHeight - mboxHeight;
 
-    if (contact) {
-      contact.style.minHeight = `${availableHeight}px`;
-      contact.style.display = 'flex';
-      contact.style.flexDirection = 'column';
-      contact.style.justifyContent = 'center';
-    }
+  if (contact) {
+    contact.style.minHeight = `${availableHeight}px`;
+    contact.style.display = 'flex';
+    contact.style.flexDirection = 'column';
+    contact.style.justifyContent = 'center';
   }
+}
 
-  window.addEventListener('load', adjustContactHeight);
-  window.addEventListener('resize', adjustContactHeight);
+window.addEventListener('load', adjustContactHeight);
+window.addEventListener('resize', adjustContactHeight);
 
-
-//db connection
-
-
+// Contact form submission
 document.querySelector('.contact-form').addEventListener('submit', async function (e) {
   e.preventDefault();
 
@@ -335,75 +345,12 @@ document.querySelector('.contact-form').addEventListener('submit', async functio
     });
 
     if (response.ok) {
-      alert('Message sent successfully!');
-      form.reset(); // clears the form
+      showToast('Message sent successfully!', 'success');
+      form.reset();
     } else {
-      alert('Error sending message.');
+      showToast('Error sending message.', 'error');
     }
   } catch (error) {
-    alert('Server error: ' + error.message);
+    showToast('Server error: ' + error.message, 'error');
   }
 });
-//
-
-  window.addEventListener("DOMContentLoaded", () => {
-    const intro = document.getElementById("intro");
-
-    // Block interaction and delay animation
-    setTimeout(() => {
-      intro.classList.add("animate"); // Start intro animation after 2s
-    }, 2000);
-  });
-
-//js response mess
-function showToast(message, type = "info") {
-  const toast = document.createElement("div");
-  toast.className = `toast ${type}`;
-  toast.textContent = message;
-  document.getElementById("toastContainer").appendChild(toast);
-  setTimeout(() => toast.remove(), 3500);
-}
-
-function showModal(title, message, expected = "") {
-  return new Promise((resolve) => {
-    const modal = document.getElementById("customModal");
-    modal.classList.add("show");
-    modal.classList.remove("hidden");
-
-    document.getElementById("modalTitle").textContent = title;
-    document.getElementById("modalMessage").textContent = message;
-    const input = document.getElementById("modalInput");
-    input.value = "";
-
-    const cancelBtn = document.getElementById("modalCancel");
-    const confirmBtn = document.getElementById("modalConfirm");
-
-    const cleanup = () => {
-      modal.classList.remove("show");
-      modal.classList.add("hidden");
-      cancelBtn.onclick = confirmBtn.onclick = null;
-    };
-
-    cancelBtn.onclick = () => {
-      cleanup();
-      resolve(false);
-    };
-
-    confirmBtn.onclick = () => {
-      if (!expected || input.value === expected) {
-        cleanup();
-        resolve(true);
-      } else {
-        showToast("Input doesn't match", "error");
-      }
-    };
-  });
-}
-//js mess
-function showToast(message, type = "info") {
-  const toast = document.createElement("div");
-  toast.className = `toast ${type}`;
-  toast.textContent = message;
-  document.getElementById("toastContainer").appendChild(toast);
-  setTimeout(() => toast.remove(), 3500);
-}

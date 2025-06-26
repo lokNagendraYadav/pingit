@@ -67,7 +67,7 @@ createBtn.addEventListener("click", async () => {
   });
 
   const data = await res.json();
-  showToast(data.message || "Account created", res.ok ? "success" : "error");
+  alert(data.message || "Account created");
 
   if (res.ok) {
     localStorage.setItem("loggedIn", "true");
@@ -90,7 +90,7 @@ signInNowBtn.addEventListener("click", async () => {
   });
 
   const data = await res.json();
-  showToast(data.message || "Logged in", res.ok ? "success" : "error");
+  alert(data.message || "Logged in");
 
   if (res.ok) {
     localStorage.setItem("loggedIn", "true");
@@ -144,10 +144,10 @@ function startMonitoring(name, url, interval, id) {
 
   const deleteBtn = card.querySelector(".delete-btn");
   deleteBtn.addEventListener("click", async () => {
-    const confirmed = await showModal("Confirm Deletion", `Type "${name}" to confirm deletion:`, name);
+    const confirmation = prompt(`To delete the web monitor permanently, type "${name}" and press delete`);
 
-    if (!confirmed) {
-      showToast("Monitor name did not match. Deletion cancelled.", "warning");
+    if (confirmation !== name) {
+      alert("Monitor name did not match. Deletion cancelled.");
       return;
     }
 
@@ -157,13 +157,13 @@ function startMonitoring(name, url, interval, id) {
       });
 
       const data = await res.json();
-      showToast(data.message || "URL deleted", res.ok ? "success" : "error");
+      alert(data.message || "URL deleted");
 
       if (res.ok) {
         card.remove();
       }
     } catch (error) {
-      showToast("Failed to delete the monitor", "error");
+      alert("Failed to delete the monitor");
       console.error(error);
     }
   });
@@ -178,7 +178,7 @@ form.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   if (localStorage.getItem("loggedIn") !== "true") {
-    showToast("Please log in to use the monitoring feature.", "warning");
+    alert("Please log in to use the monitoring feature.");
     return;
   }
 
@@ -201,10 +201,10 @@ form.addEventListener("submit", async function (e) {
       startMonitoring(name, url, interval, data.id);
       form.reset();
     } else {
-      showToast(data.message || "Failed to save URL.", "error");
+      alert(data.message || "Failed to save URL.");
     }
   } catch (error) {
-    showToast("Server error", "error");
+    alert("Server error");
     console.error(error);
   }
 });
@@ -222,7 +222,7 @@ async function loadMonitoredSites() {
       data.urls.forEach(({ name, url, interval, _id }) => startMonitoring(name, url, interval, _id));
     }
   } catch (error) {
-    showToast("Failed to load monitored sites.", "error");
+    alert("Failed to load monitored sites.");
     console.error(error);
   }
 }
@@ -239,7 +239,7 @@ logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("loggedIn");
   localStorage.removeItem("userEmail");
   list.innerHTML = "";
-  showToast("Logged out successfully!", "success");
+  alert("Logged out successfully!");
   checkAuthStatus();
 });
 
@@ -249,28 +249,34 @@ document.addEventListener("DOMContentLoaded", () => {
     loadMonitoredSites();
   }
   checkAuthStatus();
-});
 
-// Intro
+
+});
+//intro
+
+//
 window.addEventListener("load", () => {
   setTimeout(() => {
     const intro = document.getElementById("intro");
     if (intro) {
       intro.style.display = "none";
     }
-  }, 2600);
+  }, 2600); // wait for animation to complete
 });
 
-// Navbar animation
-window.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
-    document.getElementById("loginBtn").classList.add("slide-down");
-  }, 2500);
-});
+//navbar
 
-// Tool icon magnetic effect
+  window.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+      document.getElementById("loginBtn").classList.add("slide-down");
+    }, 2500);
+  });
+
+//logos
+
 const icons = document.querySelectorAll('.tool-icon img');
-const sensitivity = 400;
+const sensitivity = 400; // how far the pointer should affect icons
+
 document.addEventListener('mousemove', (e) => {
   icons.forEach(icon => {
     const rect = icon.getBoundingClientRect();
@@ -283,30 +289,35 @@ document.addEventListener('mousemove', (e) => {
     icon.style.transform = `scale(${scale})`;
   });
 });
+//conatct
 
-// Contact Section height fix
-function adjustContactHeight() {
-  const navHeight = document.querySelector('.navbar')?.offsetHeight || 0;
-  const mboxHeight = document.querySelector('.mbox')?.offsetHeight || 0;
-  const windowHeight = window.innerHeight;
-  const contact = document.querySelector('.contact-section');
-  const availableHeight = windowHeight - navHeight - mboxHeight;
+  function adjustContactHeight() {
+    const navHeight = document.querySelector('.navbar')?.offsetHeight || 0;
+    const mboxHeight = document.querySelector('.mbox')?.offsetHeight || 0;
+    const windowHeight = window.innerHeight;
+    const contact = document.querySelector('.contact-section');
+    const availableHeight = windowHeight - navHeight - mboxHeight;
 
-  if (contact) {
-    contact.style.minHeight = `${availableHeight}px`;
-    contact.style.display = 'flex';
-    contact.style.flexDirection = 'column';
-    contact.style.justifyContent = 'center';
+    if (contact) {
+      contact.style.minHeight = `${availableHeight}px`;
+      contact.style.display = 'flex';
+      contact.style.flexDirection = 'column';
+      contact.style.justifyContent = 'center';
+    }
   }
-}
 
-window.addEventListener('load', adjustContactHeight);
-window.addEventListener('resize', adjustContactHeight);
+  window.addEventListener('load', adjustContactHeight);
+  window.addEventListener('resize', adjustContactHeight);
 
-// Contact Form submission
+
+//db connection
+
+
 document.querySelector('.contact-form').addEventListener('submit', async function (e) {
   e.preventDefault();
+
   const form = e.target;
+
   const data = {
     name: form.name.value,
     phone: form.phone.value,
@@ -317,25 +328,74 @@ document.querySelector('.contact-form').addEventListener('submit', async functio
   try {
     const response = await fetch('https://contact-backend-br8j.onrender.com/api/contact', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(data)
     });
 
     if (response.ok) {
-      showToast('Message sent successfully!', 'success');
-      form.reset();
+      alert('Message sent successfully!');
+      form.reset(); // clears the form
     } else {
-      showToast('Error sending message.', 'error');
+      alert('Error sending message.');
     }
   } catch (error) {
-    showToast('Server error: ' + error.message, 'error');
+    alert('Server error: ' + error.message);
   }
 });
+//
 
-// Animate intro class
-window.addEventListener("DOMContentLoaded", () => {
-  const intro = document.getElementById("intro");
-  setTimeout(() => {
-    intro.classList.add("animate");
-  }, 2000);
-});
+  window.addEventListener("DOMContentLoaded", () => {
+    const intro = document.getElementById("intro");
+
+    // Block interaction and delay animation
+    setTimeout(() => {
+      intro.classList.add("animate"); // Start intro animation after 2s
+    }, 2000);
+  });
+
+//js response mess
+function showToast(message, type = "info") {
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  document.getElementById("toastContainer").appendChild(toast);
+  setTimeout(() => toast.remove(), 3500);
+}
+
+function showModal(title, message, expected = "") {
+  return new Promise((resolve) => {
+    const modal = document.getElementById("customModal");
+    modal.classList.add("show");
+    modal.classList.remove("hidden");
+
+    document.getElementById("modalTitle").textContent = title;
+    document.getElementById("modalMessage").textContent = message;
+    const input = document.getElementById("modalInput");
+    input.value = "";
+
+    const cancelBtn = document.getElementById("modalCancel");
+    const confirmBtn = document.getElementById("modalConfirm");
+
+    const cleanup = () => {
+      modal.classList.remove("show");
+      modal.classList.add("hidden");
+      cancelBtn.onclick = confirmBtn.onclick = null;
+    };
+
+    cancelBtn.onclick = () => {
+      cleanup();
+      resolve(false);
+    };
+
+    confirmBtn.onclick = () => {
+      if (!expected || input.value === expected) {
+        cleanup();
+        resolve(true);
+      } else {
+        showToast("Input doesn't match", "error");
+      }
+    };
+  });
+}

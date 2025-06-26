@@ -160,34 +160,55 @@ function startMonitoring(name, url, interval, id) {
   }
 
   const deleteBtn = card.querySelector(".delete-btn");
-  deleteBtn.addEventListener("click", async () => {
-    const confirmation = prompt(`To delete the web monitor permanently, type "${name}" and press delete`);
+deleteBtn.addEventListener("click", () => {
+  const modal = document.getElementById("deleteModal");
+  const confirmInput = document.getElementById("confirmNameInput");
+  const confirmBtn = document.getElementById("confirmDeleteBtn");
+  const cancelBtn = document.getElementById("cancelDeleteBtn");
 
-    if (confirmation !== name) {
+  confirmInput.value = "";
+  modal.classList.remove("hidden");
+
+  // Cleanup and hide modal
+  function cleanup() {
+    modal.classList.add("hidden");
+    confirmBtn.removeEventListener("click", confirmHandler);
+    cancelBtn.removeEventListener("click", cancelHandler);
+  }
+
+  // Confirm button handler
+  function confirmHandler() {
+    if (confirmInput.value.trim() !== name) {
       showToast("Monitor name did not match. Deletion cancelled.", "error");
+      cleanup();
       return;
     }
 
-    try {
-      const res = await fetch(`${backendURL}/delete-url?id=${encodeURIComponent(card.dataset.id)}`, {
-        method: "DELETE"
+    fetch(`${backendURL}/delete-url?id=${encodeURIComponent(card.dataset.id)}`, {
+      method: "DELETE"
+    })
+      .then(res => res.json().then(data => ({ ok: res.ok, data })))
+      .then(({ ok, data }) => {
+        showToast(data.message || "URL deleted", ok ? "success" : "error");
+        if (ok) card.remove();
+        cleanup();
+      })
+      .catch(error => {
+        showToast("Failed to delete the monitor", "error");
+        console.error(error);
+        cleanup();
       });
+  }
 
-      const data = await res.json();
-      showToast(data.message || "URL deleted", res.ok ? "success" : "error");
+  // Cancel button handler
+  function cancelHandler() {
+    cleanup();
+  }
 
-      if (res.ok) {
-        card.remove();
-      }
-    } catch (error) {
-      showToast("Failed to delete the monitor", "error");
-      console.error(error);
-    }
-  });
+  confirmBtn.addEventListener("click", confirmHandler);
+  cancelBtn.addEventListener("click", cancelHandler);
+});
 
-  list.appendChild(card);
-  checkStatus();
-  setInterval(checkStatus, interval);
 }
 
 // Submit handler

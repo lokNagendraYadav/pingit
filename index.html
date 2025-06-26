@@ -131,6 +131,19 @@
 
   <script src="Script.js" defer></script>
   <div id="toastContainer" class="toast-container"></div>
+  <!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Confirm Deletion</h3>
+    <p>Type the monitor name below to confirm deletion:</p>
+    <input type="text" id="confirmNameInput" placeholder="Enter monitor name">
+    <div class="modal-buttons">
+      <button id="confirmDeleteBtn" class="btn danger">Delete</button>
+      <button id="cancelDeleteBtn" class="btn">Cancel</button>
+    </div>
+  </div>
+</div>
+
 
 </body>
 </html>

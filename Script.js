@@ -238,7 +238,7 @@ form.addEventListener("submit", async function (e) {
     if (res.ok) {
       startMonitoring(name, url, interval, data.id);
       form.reset();
-      showToast("Monitoring started!", "success");
+      showToast("Monitoring started!, check your mail for conformation.", "success");
     } else {
       showToast(data.message || "Failed to save URL.", "error");
     }
